@@ -286,6 +286,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 var matchesTermList = termList.Length == 0 || FilterItem(item, termList);
                 item.Visible = matchesTermList && FilterType(item);
             }
+            controller.ReleaseAllPooled();
 
             controller.ShowPanel();
             controller.ResetView();

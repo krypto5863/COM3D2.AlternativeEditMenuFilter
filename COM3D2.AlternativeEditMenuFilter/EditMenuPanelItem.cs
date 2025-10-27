@@ -63,10 +63,16 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        public EditMenuPanelItem(GameObject go, SceneEdit.SMenuItem menu)
+        public EditMenuPanelItem()
+        {
+        }
+
+        public void Initialize(GameObject go, SceneEdit.SMenuItem menu)
         {
             gameObject = go;
             this.menu = menu;
+            _isCompat = null;
+            _existentFile = null;
         }
     }
 }
