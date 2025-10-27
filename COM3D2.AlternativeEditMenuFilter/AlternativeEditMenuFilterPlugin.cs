@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
-    [BepInPlugin("org.bepinex.plugins.com3d2.alternativeeditmenufilter", "AlternativeEditMenuFilter", "1.0")]
+    [BepInPlugin("org.bepinex.plugins.com3d2.alternativeeditmenufilter", "AlternativeEditMenuFilter", "1.1")]
     public class AlternateEditMenuFilterPlugin : BaseUnityPlugin
     {
         public static AlternateEditMenuFilterPlugin Instance { get; private set; }
