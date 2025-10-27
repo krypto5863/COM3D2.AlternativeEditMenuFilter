@@ -85,10 +85,10 @@ namespace COM3D2.SimpleUI.Implementation
             float currentX = 0;
             float currentY = 0;
 
-            this.contentWidth = 0;
-            this.contentHeight = 0;
+            contentWidth = 0;
+            contentHeight = 0;
 
-            foreach (var component in this.layoutComponents)
+            foreach (var component in layoutComponents)
             {
                 if (!component.Visible) continue;
 
@@ -97,20 +97,20 @@ namespace COM3D2.SimpleUI.Implementation
                 component.gameObject.transform.localPosition = PostionToLocalTransform(
                     position, component.size);
 
-                if (this.layoutDirection == LayoutDirection.HORIZONTAL)
+                if (layoutDirection == LayoutDirection.HORIZONTAL)
                 {
-                    currentX += component.size.x + this.spacing;
+                    currentX += component.size.x + spacing;
                 }
                 else
                 {
-                    currentY += component.size.y + this.spacing;
+                    currentY += component.size.y + spacing;
                 }
 
                 var width = Mathf.FloorToInt(position.x + component.size.x + 0.5f);
                 var height = Mathf.FloorToInt(position.y + component.size.y + 0.5f);
 
-                if (width > this.contentWidth) this.contentWidth = width;
-                if (height > this.contentHeight) this.contentHeight = height;
+                if (width > contentWidth) contentWidth = width;
+                if (height > contentHeight) contentHeight = height;
             }
         }
 
@@ -126,8 +126,8 @@ namespace COM3D2.SimpleUI.Implementation
 
         public override void SetSize(Vector2 size, bool triggerLayout)
         {
-            this._size = size;
-            this._dirty = triggerLayout;
+            _size = size;
+            _dirty = triggerLayout;
         }
 
         public ITextArea TextArea(Vector2 size, string initial, UnityAction<string> onChange)

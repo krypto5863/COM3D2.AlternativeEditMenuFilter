@@ -15,14 +15,14 @@ namespace COM3D2.SimpleUI.Implementation
 
         internal void InitRoot()
         {
-            this.gameObject.name = "SimpleUIRoot";
-            uiPanel = this.gameObject.AddComponent<UIPanel>();
+            gameObject.name = "SimpleUIRoot";
+            uiPanel = gameObject.AddComponent<UIPanel>();
             uiPanel.depth = 100;
 
-            var width = UIRoot.GetPixelSizeAdjustment(this.gameObject) * Screen.width;
-            var height = UIRoot.GetPixelSizeAdjustment(this.gameObject) * Screen.height;
+            var width = UIRoot.GetPixelSizeAdjustment(gameObject) * Screen.width;
+            var height = UIRoot.GetPixelSizeAdjustment(gameObject) * Screen.height;
 
-            this._size = new Vector2(width, height);
+            _size = new Vector2(width, height);
         }
 
         public IAutoLayout Area(Rect rect, IAutoLayoutOptions options)
@@ -51,7 +51,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public IFixedLayout Group(Rect rect)
         {
-            return this.Child<SimpleFixedLayout>(rect);
+            return Child<SimpleFixedLayout>(rect);
         }
 
         public ISlider Slider(Rect rect, SimpleSlider.SliderDirection direction, float initial, float minimum, float maximum, UnityAction<float> onChange)
@@ -80,10 +80,10 @@ namespace COM3D2.SimpleUI.Implementation
 
         protected override void Relayout()
         {
-            this.contentHeight = 0;
-            this.contentWidth = 0;
+            contentHeight = 0;
+            contentWidth = 0;
 
-            foreach (var o in this.layoutComponents)
+            foreach (var o in layoutComponents)
             {
                 if (!o.Visible) continue;
 
@@ -92,8 +92,8 @@ namespace COM3D2.SimpleUI.Implementation
                 var width = Mathf.FloorToInt(o.position.x + o.size.x + 0.5f);
                 var height = Mathf.FloorToInt(o.position.y + o.size.y + 0.5f);
 
-                if (width > this.contentWidth) this.contentWidth = width;
-                if (height > this.contentHeight) this.contentHeight = height;
+                if (width > contentWidth) contentWidth = width;
+                if (height > contentHeight) contentHeight = height;
             }
         }
 
@@ -114,14 +114,14 @@ namespace COM3D2.SimpleUI.Implementation
 
         public ITextField TextField(Rect rect, string initial, UnityAction<string> onChange = null)
         {
-            var control = this.Child<SimpleTextField>(rect);
+            var control = Child<SimpleTextField>(rect);
             control.text = initial;
             return control;
         }
 
         public IToggle Toggle(Rect rect, string label, bool initial, UnityAction<bool> onChange = null)
         {
-            var toggle = this.Child<SimpleToggle>(rect);
+            var toggle = Child<SimpleToggle>(rect);
             toggle.text = label;
             toggle.Value = initial;
             return toggle;
@@ -129,7 +129,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public IToolbar Toolbar(Rect rect, int initial, string[] choices, UnityAction<int> onChange = null)
         {
-            var toolbar = this.Child<SimpleToolbar>(rect);
+            var toolbar = Child<SimpleToolbar>(rect);
             toolbar.Choices = choices;
             toolbar.Value = initial;
 

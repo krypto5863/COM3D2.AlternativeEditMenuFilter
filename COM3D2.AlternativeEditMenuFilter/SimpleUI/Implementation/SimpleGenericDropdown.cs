@@ -33,14 +33,11 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        public virtual DropdownItem ValueData
-        {
-            get => uiPopupList.data as DropdownItem;
-        }
+        public virtual DropdownItem ValueData => uiPopupList.data as DropdownItem;
 
         public virtual T GetValue<T>()
         {
-            if (this.Value is T data)
+            if (Value is T data)
             {
                 return data;
             }
@@ -49,7 +46,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public virtual IGenericDropdown SetValue<T>(T value)
         {
-            this.Value = value;
+            Value = value;
             return this;
         }
 
@@ -68,19 +65,19 @@ namespace COM3D2.SimpleUI.Implementation
         public override void InitControl()
         {
             base.InitControl();
-            EventDelegate.Add(uiPopupList.onChange, new EventDelegate.Callback(this.uiPopupListDataChange));
+            EventDelegate.Add(uiPopupList.onChange, new EventDelegate.Callback(uiPopupListDataChange));
         }
 
         protected virtual void uiPopupListDataChange()
         {
-            if (this.ready)
+            if (ready)
             {
-                if (this.UpdateTextOnValue)
+                if (UpdateTextOnValue)
                 {
                     SetDirty();
                 }
 
-                changeEvent.Invoke(this.Value);
+                changeEvent.Invoke(Value);
             }
         }
 
@@ -96,7 +93,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public virtual IGenericDropdown ClearChoices()
         {
-            this.uiPopupList.Clear();
+            uiPopupList.Clear();
             return this;
         }
 
@@ -105,7 +102,7 @@ namespace COM3D2.SimpleUI.Implementation
             if (string.IsNullOrEmpty(text)) text = value.ToString();
             if (string.IsNullOrEmpty(selected)) selected = text;
 
-            this.uiPopupList.AddItem(text, new DropdownItem()
+            uiPopupList.AddItem(text, new DropdownItem()
             {
                 Value = value,
                 ItemName = text,
@@ -123,17 +120,17 @@ namespace COM3D2.SimpleUI.Implementation
 
         public IGenericDropdown SetUpdateTextOnValuechange(bool value)
         {
-            this.UpdateTextOnValue = value;
+            UpdateTextOnValue = value;
             return this;
         }
 
         public override void UpdateUI()
         {
             base.UpdateUI();
-            var data = this.ValueData;
-            if (this.UpdateTextOnValue && data != null)
+            var data = ValueData;
+            if (UpdateTextOnValue && data != null)
             {
-                this.uiLabel.text = data.SelectedName;
+                uiLabel.text = data.SelectedName;
             }
         }
 

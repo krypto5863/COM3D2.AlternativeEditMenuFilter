@@ -44,11 +44,11 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public void Init(PresetSearchConfig config, Vector3 localPosition)
         {
-            this.controller = new PresetPanelController(this.gameObject.transform.parent.gameObject);
+            controller = new PresetPanelController(gameObject.transform.parent.gameObject);
             this.config = config;
-            this.gameObject.transform.localPosition = localPosition;
+            gameObject.transform.localPosition = localPosition;
 
-            this.History.AddRange(
+            History.AddRange(
                 this.config.History.Value
                 .Split('\n')
                 .Select(s => s.Trim())
@@ -57,19 +57,19 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void Start()
         {
-            Assert.IsNotNull(this.config, "Not properly initialized");
-            this.BuildUI();
+            Assert.IsNotNull(config, "Not properly initialized");
+            BuildUI();
         }
 
         private void OnDisable()
         {
             Log.LogVerbose("Saving search history");
-            this.config.History.Value = String.Join("\n", this.History.ToArray());
+            config.History.Value = String.Join("\n", History.ToArray());
         }
 
         private void OnEnable()
         {
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void Update()
@@ -85,7 +85,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             var panelHeight = 40;
 
-            var ui = SimpleUIRoot.Create(this.gameObject, 0, 0);
+            var ui = SimpleUIRoot.Create(gameObject, 0, 0);
 
             var box = ui.Box(new Rect(0, 0, 1050, panelHeight + 16), "");
 
@@ -98,19 +98,19 @@ namespace COM3D2.AlternativeEditMenuFilter
             historyDropdown = area.Dropdown(
                 new Vector2(50, panelHeight),
                 "Hist", null,
-                this.History,
-                this.OnHistoryDropdownChange);
+                History,
+                OnHistoryDropdownChange);
 
             searchTextField = area.TextField(new Vector2(250, panelHeight), "");
-            searchTextField.AddSubmitCallback(this.SearchTextfieldSubmit);
+            searchTextField.AddSubmitCallback(SearchTextfieldSubmit);
 
-            area.Button(new Vector2(70, panelHeight), "Reset", this.ResetButtonClick);
+            area.Button(new Vector2(70, panelHeight), "Reset", ResetButtonClick);
 
-            caseSensitivityButton = area.Button(new Vector2(50, panelHeight), "Aa", this.CaseSensitivityButtonClick);
+            caseSensitivityButton = area.Button(new Vector2(50, panelHeight), "Aa", CaseSensitivityButtonClick);
 
-            termIncludeButton = area.Button(new Vector2(50, panelHeight), "Or", this.TermIncludeButtonClick);
+            termIncludeButton = area.Button(new Vector2(50, panelHeight), "Or", TermIncludeButtonClick);
 
-            showNamesButton = area.Button(new Vector2(50, panelHeight), "Name", this.ShowNamesButtonClick);
+            showNamesButton = area.Button(new Vector2(50, panelHeight), "Name", ShowNamesButtonClick);
         }
 
         private void ShowNamesButtonClick()
@@ -135,39 +135,39 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void TermIncludeButtonClick()
         {
-            this.SearchAllTerms = !this.SearchAllTerms;
+            SearchAllTerms = !SearchAllTerms;
             UpdateToggles();
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void CaseSensitivityButtonClick()
         {
-            this.IgnoreCase = !this.IgnoreCase;
+            IgnoreCase = !IgnoreCase;
             UpdateToggles();
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void UpdateToggles()
         {
-            if (this.SearchAllTerms)
+            if (SearchAllTerms)
             {
-                this.termIncludeButton.text = "AND";
+                termIncludeButton.text = "AND";
             }
             else
             {
-                this.termIncludeButton.text = "OR";
+                termIncludeButton.text = "OR";
             }
 
-            if (this.IgnoreCase)
+            if (IgnoreCase)
             {
-                this.caseSensitivityButton.defaultColor = this.caseSensitivityButton.hoverColor = Color.white;
+                caseSensitivityButton.defaultColor = caseSensitivityButton.hoverColor = Color.white;
             }
             else
             {
-                this.caseSensitivityButton.defaultColor = this.caseSensitivityButton.hoverColor = Color.gray;
+                caseSensitivityButton.defaultColor = caseSensitivityButton.hoverColor = Color.gray;
             }
 
-            if (this.showNames)
+            if (showNames)
             {
                 showNamesButton.defaultColor = showNamesButton.hoverColor = Color.white;
             }
@@ -180,33 +180,33 @@ namespace COM3D2.AlternativeEditMenuFilter
         private void SearchTextfieldSubmit(string terms)
         {
             terms = terms.Trim();
-            this.search = terms;
+            search = terms;
             if (terms == "")
             {
-                this.ResetButtonClick();
+                ResetButtonClick();
                 return;
             }
             AddToHistory(terms);
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void AddToHistory(string terms)
         {
-            var index = this.History.IndexOf(terms);
+            var index = History.IndexOf(terms);
             if (index >= 0)
             {
-                this.History.RemoveAt(index);
+                History.RemoveAt(index);
             }
 
-            this.History.Insert(0, terms);
+            History.Insert(0, terms);
 
-            var maxHistory = this.config.MaxHistory.Value;
-            if (this.History.Count > maxHistory)
+            var maxHistory = config.MaxHistory.Value;
+            if (History.Count > maxHistory)
             {
-                this.History.RemoveRange(maxHistory, this.History.Count - maxHistory);
+                History.RemoveRange(maxHistory, History.Count - maxHistory);
             }
 
-            this.historyDropdown.Choices = this.History;
+            historyDropdown.Choices = History;
         }
 
         private void QueueUpdateItemList()
@@ -216,7 +216,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void UpdateItemList()
         {
-            var termList = this.search
+            var termList = search
                 .Split(' ')
                 .Where(t => !string.IsNullOrEmpty(t))
                 .Select(t => t.Trim())
@@ -285,8 +285,8 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void ResetButtonClick()
         {
-            this.search = "";
-            this.searchTextField.Value = "";
+            search = "";
+            searchTextField.Value = "";
             controller.ShowAll();
             controller.ResetView();
         }

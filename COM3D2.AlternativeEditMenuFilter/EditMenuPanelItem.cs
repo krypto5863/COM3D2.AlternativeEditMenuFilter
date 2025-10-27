@@ -19,30 +19,15 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        public string Filename
-        {
-            get => menu.m_strMenuFileName;
-        }
+        public string Filename => menu.m_strMenuFileName;
 
-        public string Name
-        {
-            get => menu.m_strMenuName;
-        }
+        public string Name => menu.m_strMenuName;
 
-        public string LocalizedName
-        {
-            get => menu.menuNameCurrentLanguage;
-        }
+        public string LocalizedName => menu.menuNameCurrentLanguage;
 
-        public string Info
-        {
-            get => menu.m_strInfo;
-        }
+        public string Info => menu.m_strInfo;
 
-        public string LocalizedInfo
-        {
-            get => menu.infoTextCurrentLanguage;
-        }
+        public string LocalizedInfo => menu.infoTextCurrentLanguage;
 
         private bool? _existentFile;
 
@@ -80,7 +65,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public EditMenuPanelItem(GameObject go, SceneEdit.SMenuItem menu)
         {
-            this.gameObject = go;
+            gameObject = go;
             this.menu = menu;
         }
     }

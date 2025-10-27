@@ -16,27 +16,27 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public EditMenuPanelController(GameObject go)
         {
-            this.m_scrollView = go.GetComponentInChildren<UIScrollView>(false);
+            m_scrollView = go.GetComponentInChildren<UIScrollView>(false);
             Assert.IsNotNull(m_scrollView, $"Could not find UIScrollView for {go}");
 
             m_scrollViewPanel = m_scrollView.GetComponent<UIPanel>();
 
-            this.m_grid = this.m_scrollView.GetComponentInChildren<UIGrid>();
+            m_grid = m_scrollView.GetComponentInChildren<UIGrid>();
             Assert.IsNotNull(m_grid, $"Could not find UIGrid for {go}");
 
-            this.m_gridTableTrans = this.m_grid.transform;
+            m_gridTableTrans = m_grid.transform;
 
-            this.m_sceneEdit = GameObject.Find("__SceneEdit__").GetComponent<SceneEdit>();
+            m_sceneEdit = GameObject.Find("__SceneEdit__").GetComponent<SceneEdit>();
             Assert.IsNotNull(m_sceneEdit, $"Could not find SceneEdit");
 
-            this.m_scrollBar = go.GetComponentInChildren<UIScrollBar>(false);
+            m_scrollBar = go.GetComponentInChildren<UIScrollBar>(false);
             Assert.IsNotNull(m_scrollBar, $"Could not find UIScrollBar for {go}");
         }
 
         public IEnumerable<EditMenuPanelItem> GetAllItems()
         {
-            return (from i in Enumerable.Range(0, this.m_gridTableTrans.childCount)
-                    select this.m_gridTableTrans.GetChild(i) into item
+            return (from i in Enumerable.Range(0, m_gridTableTrans.childCount)
+                    select m_gridTableTrans.GetChild(i) into item
                     where item != null
                     select item.Find("Button") into btn
                     where btn != null
@@ -51,14 +51,14 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public void ResetView()
         {
-            bool enabled = this.m_grid.enabled;
-            this.m_grid.enabled = true;
-            this.m_grid.hideInactive = true;
-            this.m_grid.Reposition();
-            this.m_scrollView.ResetPosition();
-            this.m_scrollBar.value = 0f;
-            this.m_grid.enabled = enabled;
-            this.m_sceneEdit.HoverOutCallback();
+            bool enabled = m_grid.enabled;
+            m_grid.enabled = true;
+            m_grid.hideInactive = true;
+            m_grid.Reposition();
+            m_scrollView.ResetPosition();
+            m_scrollBar.value = 0f;
+            m_grid.enabled = enabled;
+            m_sceneEdit.HoverOutCallback();
         }
 
         public void ShowAll()
@@ -74,12 +74,12 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         internal void HidePanel()
         {
-            this.m_scrollViewPanel.alpha = 0.0f;
+            m_scrollViewPanel.alpha = 0.0f;
         }
 
         internal void ShowPanel()
         {
-            this.m_scrollViewPanel.alpha = 1.0f;
+            m_scrollViewPanel.alpha = 1.0f;
         }
     }
 }

@@ -25,8 +25,8 @@ namespace COM3D2.SimpleUI.Implementation
                     var prefab = Resources.Load<UIAtlas>(path);
                     if (prefab != null)
                     {
-                        atlasCache[name] = UnityEngine.Object.Instantiate(prefab);
-                        UnityEngine.Object.DontDestroyOnLoad(atlasCache[name]);
+                        atlasCache[name] = Object.Instantiate(prefab);
+                        Object.DontDestroyOnLoad(atlasCache[name]);
                     }
                 }
             }

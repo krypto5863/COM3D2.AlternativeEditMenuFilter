@@ -4,21 +4,9 @@ namespace COM3D2.AlternativeEditMenuFilter
 {
     internal class Log
     {
-        internal static ManualLogSource Logger
-        {
-            get
-            {
-                return AlternateEditMenuFilterPlugin.Instance.Logger;
-            }
-        }
+        internal static ManualLogSource Logger => AlternateEditMenuFilterPlugin.Instance.Logger;
 
-        internal static bool enableVerbose
-        {
-            get
-            {
-                return false;
-            }
-        }
+        internal static bool enableVerbose => false;
 
         internal static void LogWarning(string message, params object[] args)
         {

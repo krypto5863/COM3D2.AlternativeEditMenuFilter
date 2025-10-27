@@ -8,7 +8,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public override void InitControl()
         {
-            uiLabel = NGUITools.AddChild<UILabel>(this.gameObject);
+            uiLabel = NGUITools.AddChild<UILabel>(gameObject);
             uiLabel.trueTypeFont = UIUtils.GetFont("NotoSansCJKjp-DemiLight");
             uiLabel.color = Color.white;
         }
@@ -16,11 +16,11 @@ namespace COM3D2.SimpleUI.Implementation
         public override void UpdateUI()
         {
             uiLabel.SetDimensions(
-                Mathf.FloorToInt(this.size.x + .5f),
-                Mathf.FloorToInt(this.size.y + .5f));
+                Mathf.FloorToInt(size.x + .5f),
+                Mathf.FloorToInt(size.y + .5f));
             uiLabel.rawPivot = UIWidget.Pivot.Left;
-            uiLabel.gameObject.transform.localPosition = new Vector3(-this.size.x / 2, 0);
-            uiLabel.text = this.text;
+            uiLabel.gameObject.transform.localPosition = new Vector3(-size.x / 2, 0);
+            uiLabel.text = text;
         }
     }
 }

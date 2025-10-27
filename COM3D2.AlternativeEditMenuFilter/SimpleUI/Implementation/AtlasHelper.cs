@@ -12,7 +12,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public void Init(string[] atlasNameList)
         {
-            this.pendingAtlasLoadList = atlasNameList;
+            pendingAtlasLoadList = atlasNameList;
         }
 
         public void Start()

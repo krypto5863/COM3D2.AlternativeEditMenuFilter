@@ -25,23 +25,23 @@ namespace COM3D2.AlternativeEditMenuFilter
             Instance = this;
             DontDestroyOnLoad(this);
 
-            this.Config = new AlternativeEditMenuFilterConfig(base.Config);
+            Config = new AlternativeEditMenuFilterConfig(base.Config);
 
-            this.TranslationProvider = XUATTranslationProvider.Create();
-            if (this.TranslationProvider == null)
+            TranslationProvider = XUATTranslationProvider.Create();
+            if (TranslationProvider == null)
             {
                 Log.LogWarning("XUAT is not available, machine translated text search not available");
-                this.TranslationProvider = new DummyTranslationProvider();
+                TranslationProvider = new DummyTranslationProvider();
             }
 
-            SceneManager.sceneLoaded += this.OnChangedSceneLevel;
+            SceneManager.sceneLoaded += OnChangedSceneLevel;
         }
 
         private void OnChangedSceneLevel(Scene scenename, LoadSceneMode SceneMode)
         {
             if (scenename.name == "SceneEdit")
             {
-                this.InstallMenu();
+                InstallMenu();
             }
         }
 
@@ -49,13 +49,13 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             //StopAllCoroutines();
             var itemMenu = InstallMenu<EditMenuPanelFilter>("ScrollPanel-MenuItem");
-            itemMenu.Init(this.Config.ItemSearchConfig, new Vector3(-575, 520));
+            itemMenu.Init(Config.ItemSearchConfig, new Vector3(-575, 520));
 
             var setMenu = InstallMenu<EditMenuPanelFilter>("ScrollPanel-SetItem");
-            setMenu.Init(this.Config.ItemSetSearchConfig, new Vector3(-575, 520));
+            setMenu.Init(Config.ItemSetSearchConfig, new Vector3(-575, 520));
 
             var presetMenu = InstallMenu<PresetPanelFilter>("PresetPanel/PresetViewer");
-            presetMenu.Init(this.Config.PresetSearchConfig, new Vector3(-575, 520));
+            presetMenu.Init(Config.PresetSearchConfig, new Vector3(-575, 520));
         }
 
         private T InstallMenu<T>(string panelName)
@@ -80,9 +80,6 @@ namespace COM3D2.AlternativeEditMenuFilter
             return null;
         }
 
-        internal new ManualLogSource Logger
-        {
-            get => base.Logger;
-        }
+        internal new ManualLogSource Logger => base.Logger;
     }
 }

@@ -15,38 +15,32 @@ namespace COM3D2.SimpleUI.Implementation
         public Vector2 size
         {
             get => _size;
-            set
-            {
-                this.SetSize(value, true);
-            }
+            set => SetSize(value, true);
         }
 
         public Vector2 position
         {
             get => _position;
-            set
-            {
-                this.SetPosition(value, true);
-            }
+            set => SetPosition(value, true);
         }
 
         public string text
         {
-            get => this._text;
+            get => _text;
             set
             {
-                this._text = value;
-                this.SetDirty();
+                _text = value;
+                SetDirty();
             }
         }
 
         public UITexture texture
         {
-            get => this._texture;
+            get => _texture;
             set
             {
-                this._texture = value;
-                this.SetDirty();
+                _texture = value;
+                SetDirty();
             }
         }
 
@@ -60,41 +54,41 @@ namespace COM3D2.SimpleUI.Implementation
 
         public void SetSize(Vector2 size, bool triggerLayout)
         {
-            this._size = size;
-            this.SetDirty();
+            _size = size;
+            SetDirty();
             if (triggerLayout)
             {
-                this._parent.SetDirty();
+                _parent.SetDirty();
             }
         }
 
         public void SetPosition(Vector2 position, bool triggerLayout)
         {
-            this._position = position;
+            _position = position;
             if (triggerLayout)
             {
-                this._parent.SetDirty();
+                _parent.SetDirty();
             }
         }
 
         public void Init(BaseLayout parent)
         {
-            this.gameObject.name = this.GetType().Name;
-            this._parent = parent;
-            this.InitControl();
+            gameObject.name = GetType().Name;
+            _parent = parent;
+            InitControl();
         }
 
         public void SetDirty()
         {
-            this._dirty = true;
+            _dirty = true;
         }
 
         public void Update()
         {
-            if (this._dirty)
+            if (_dirty)
             {
-                this._dirty = false;
-                this.UpdateUI();
+                _dirty = false;
+                UpdateUI();
             }
         }
 
@@ -106,30 +100,27 @@ namespace COM3D2.SimpleUI.Implementation
         {
             if (_parent)
             {
-                this._parent.Remove(this);
-                this._parent = null;
+                _parent.Remove(this);
+                _parent = null;
             }
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
         private void OnDestroy()
         {
             if (_parent)
             {
-                this._parent.Remove(this);
+                _parent.Remove(this);
             }
         }
 
         public virtual bool Visible
         {
-            get
-            {
-                return this.gameObject.activeSelf;
-            }
+            get => gameObject.activeSelf;
             set
             {
-                this.gameObject.SetActive(value);
-                this._parent.SetDirty();
+                gameObject.SetActive(value);
+                _parent.SetDirty();
             }
         }
     }

@@ -21,8 +21,8 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             this.translationResult = translationResult;
 
             var type = translationResult.GetType();
-            this.Succeeded = (bool)AccessTools.Property(type, "Succeeded").GetValue(translationResult, null);
-            this.TranslatedText = (string)AccessTools.Property(type, "TranslatedText").GetValue(translationResult, null);
+            Succeeded = (bool)AccessTools.Property(type, "Succeeded").GetValue(translationResult, null);
+            TranslatedText = (string)AccessTools.Property(type, "TranslatedText").GetValue(translationResult, null);
         }
     }
 
@@ -87,7 +87,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             };
 
             var result = tryTranslateMethod.Invoke(
-                this.translator,
+                translator,
                 args);
 
             translatedText = args[1] as string;
@@ -102,7 +102,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             };
 
             translateAsyncMethod.Invoke(
-                this.translator,
+                translator,
                 new object[]
                 {
                     text,
@@ -135,7 +135,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 
         protected XUATTranslationProvider()
         {
-            this.translator = XUATTranslator.Default;
+            translator = XUATTranslator.Default;
         }
 
         private class TResult : ITranslationResult
@@ -168,9 +168,9 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 
             public void Resolve(XUATTranslationResult r)
             {
-                this.IsTranslationSuccessful = r.Succeeded;
-                this.TranslatedText = r.TranslatedText;
-                this.IsReady = true;
+                IsTranslationSuccessful = r.Succeeded;
+                TranslatedText = r.TranslatedText;
+                IsReady = true;
 #if DEBUG
                 LogVerbose($"AsyntTranslationResolved: {this}");
 #endif
@@ -212,9 +212,9 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
         {
             while (true)
             {
-                yield return new WaitUntil(() => this.queue.Count > 0);
+                yield return new WaitUntil(() => queue.Count > 0);
 
-                var r = this.queue.Dequeue();
+                var r = queue.Dequeue();
                 var complete = false;
 #if DEBUG
                 LogVerbose("Translating: {r.OriginalText}");

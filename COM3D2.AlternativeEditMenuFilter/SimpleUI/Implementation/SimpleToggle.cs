@@ -20,8 +20,8 @@ namespace COM3D2.SimpleUI.Implementation
             get => _value;
             set
             {
-                this._value = value;
-                this.checkSprite.gameObject.SetActive(value);
+                _value = value;
+                checkSprite.gameObject.SetActive(value);
             }
         }
 
@@ -32,7 +32,7 @@ namespace COM3D2.SimpleUI.Implementation
         public Color disabledColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private readonly ToggleEvent onSelected = new ToggleEvent();
-        public ToggleEvent OnSelected { get => onSelected; }
+        public ToggleEvent OnSelected => onSelected;
 
         public override void InitControl()
         {
@@ -51,7 +51,7 @@ namespace COM3D2.SimpleUI.Implementation
             uiLabel.color = Color.white;
             uiLabel.rawPivot = UIWidget.Pivot.Left;
 
-            this.Value = false;
+            Value = false;
 
             uiButton = gameObject.AddComponent<UIButton>();
             uiButton.tweenTarget = boxSprite.gameObject;
@@ -59,32 +59,32 @@ namespace COM3D2.SimpleUI.Implementation
             uiButton.defaultColor = new Color(1, 1, 1, 0.9f);
             EventDelegate.Add(uiButton.onClick, new EventDelegate.Callback(delegate ()
             {
-                this.Value = !this.Value;
-                OnSelected.Invoke(this.Value);
+                Value = !Value;
+                OnSelected.Invoke(Value);
             }));
         }
 
         public override void UpdateUI()
         {
-            boxCollider.size = this.size;
-            boxSprite.gameObject.transform.localPosition = new Vector3(-this.size.x / 2 + 10, 0);
+            boxCollider.size = size;
+            boxSprite.gameObject.transform.localPosition = new Vector3(-size.x / 2 + 10, 0);
 
-            var labelWidth = this.size.x - 30;
+            var labelWidth = size.x - 30;
 
-            uiLabel.SetDimensions(Mathf.FloorToInt(labelWidth + 0.5f), Mathf.FloorToInt(this.size.y + 0.5f));
+            uiLabel.SetDimensions(Mathf.FloorToInt(labelWidth + 0.5f), Mathf.FloorToInt(size.y + 0.5f));
             uiLabel.gameObject.transform.localPosition = new Vector3(
                 -labelWidth / 2 + 15, 0);
-            uiLabel.text = this.text;
+            uiLabel.text = text;
         }
 
         public void AddChangeCallback(UnityAction<bool> callback)
         {
-            this.onSelected.AddListener(callback);
+            onSelected.AddListener(callback);
         }
 
         public void RemoveChangeCallback(UnityAction<bool> callback)
         {
-            this.onSelected.RemoveListener(callback);
+            onSelected.RemoveListener(callback);
         }
     }
 }

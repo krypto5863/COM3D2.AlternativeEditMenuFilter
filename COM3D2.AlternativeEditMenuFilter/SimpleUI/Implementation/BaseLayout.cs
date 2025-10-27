@@ -15,10 +15,7 @@ namespace COM3D2.SimpleUI.Implementation
         public virtual Vector2 position
         {
             get => _position;
-            set
-            {
-                SetPosition(value, true);
-            }
+            set => SetPosition(value, true);
         }
 
         protected Vector2 _size;
@@ -26,10 +23,7 @@ namespace COM3D2.SimpleUI.Implementation
         public virtual Vector2 size
         {
             get => _size;
-            set
-            {
-                SetSize(value, true);
-            }
+            set => SetSize(value, true);
         }
 
         protected BaseLayout _parent;
@@ -64,14 +58,14 @@ namespace COM3D2.SimpleUI.Implementation
 
         public void Init(BaseLayout parent)
         {
-            this.gameObject.name = this.GetType().Name;
-            UnityEngine.Debug.Log($"Name is {this.gameObject.name}");
+            gameObject.name = GetType().Name;
+            Debug.Log($"Name is {gameObject.name}");
             var parentPanel = gameObject.GetComponentInParent<UIPanel>();
-            uiPanel = this.gameObject.AddComponent<UIPanel>();
+            uiPanel = gameObject.AddComponent<UIPanel>();
             uiPanel.depth = parentPanel.depth + 1;
 
-            this._parent = parent;
-            this.InitLayout();
+            _parent = parent;
+            InitLayout();
         }
 
         public virtual void InitLayout()
@@ -80,10 +74,10 @@ namespace COM3D2.SimpleUI.Implementation
 
         protected T Child<T>() where T : MonoBehaviour, ILayoutComponent
         {
-            GameObject go = NGUITools.AddChild(this.gameObject);
+            GameObject go = NGUITools.AddChild(gameObject);
             T component = go.AddComponent<T>();
             component.Init(this);
-            this.layoutComponents.Add(component);
+            layoutComponents.Add(component);
             SetDirty();
             return component;
         }
@@ -120,30 +114,30 @@ namespace COM3D2.SimpleUI.Implementation
 
         public virtual void SetDirty()
         {
-            this._dirty = true;
+            _dirty = true;
         }
 
         protected virtual void Update()
         {
-            if (this._dirty)
+            if (_dirty)
             {
-                UnityEngine.Debug.Log($"{this} dirty");
+                Debug.Log($"{this} dirty");
 
-                this._dirty = false;
+                _dirty = false;
 
                 if (boxCollider != null)
                 {
-                    boxCollider.size = this.size;
+                    boxCollider.size = size;
                 }
 
-                this.Relayout();
-                this.onLayout.Invoke();
+                Relayout();
+                onLayout.Invoke();
             }
         }
 
         public virtual void SetSize(Vector2 size, bool triggerLayout)
         {
-            this._size = size;
+            _size = size;
             SetDirty();
             if (triggerLayout && _parent != null)
             {
@@ -153,7 +147,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public virtual void SetPosition(Vector2 position, bool triggerLayout)
         {
-            this._position = position;
+            _position = position;
             SetDirty();
             if (triggerLayout && _parent != null)
             {
@@ -175,28 +169,22 @@ namespace COM3D2.SimpleUI.Implementation
 
         public virtual bool Visible
         {
-            get
-            {
-                return this.gameObject.activeSelf;
-            }
+            get => gameObject.activeSelf;
             set
             {
-                this.gameObject.SetActive(value);
-                this._parent.SetDirty();
+                gameObject.SetActive(value);
+                _parent.SetDirty();
             }
         }
 
         public bool Draggable
         {
-            get
-            {
-                return uiDragObj != null && uiDragObj.enabled;
-            }
+            get => uiDragObj != null && uiDragObj.enabled;
             set
             {
-                if (!(this._parent is SimpleFixedLayout))
+                if (!(_parent is SimpleFixedLayout))
                 {
-                    UnityEngine.Debug.Log("Dragging ended");
+                    Debug.Log("Dragging ended");
                     return;
                 }
 
@@ -217,10 +205,10 @@ namespace COM3D2.SimpleUI.Implementation
         {
             boxCollider = gameObject.AddComponent<BoxCollider>();
             uiDragObj = gameObject.AddComponent<UIDragObject>();
-            uiDragObj.target = this.gameObject.transform;
+            uiDragObj.target = gameObject.transform;
             uiDragObj.dragEffect = UIDragObject.DragEffect.None;
-            uiDragObj.contentRect = this.uiPanel;
-            uiDragObj.panelRegion = this._parent.uiPanel;
+            uiDragObj.contentRect = uiPanel;
+            uiDragObj.panelRegion = _parent.uiPanel;
 
             var listener = gameObject.AddComponent<UIEventListener>();
             var wasDragging = false;
@@ -233,41 +221,35 @@ namespace COM3D2.SimpleUI.Implementation
                 if (!pressed && wasDragging)
                 {
                     wasDragging = false;
-                    this._position = this.gameObjectLocalToPosition;
+                    _position = gameObjectLocalToPosition;
                 }
             };
         }
 
-        protected Vector2 gameObjectLocalToPosition
-        {
-            get
-            {
-                return _parent.TransformLocalToPostion(this.gameObject.transform.localPosition, this.size);
-            }
-        }
+        protected Vector2 gameObjectLocalToPosition => _parent.TransformLocalToPostion(gameObject.transform.localPosition, size);
 
         protected Vector2 TransformLocalToPostion(Vector3 local, Vector2 size)
         {
-            var posx = local.x + (this._size.x / 2f) - (size.x / 2f);
-            var posy = -(local.y - (this._size.y / 2f) + (size.y / 2f));
+            var posx = local.x + (_size.x / 2f) - (size.x / 2f);
+            var posy = -(local.y - (_size.y / 2f) + (size.y / 2f));
             return new Vector2(posx, posy);
         }
 
         protected Vector3 PostionToLocalTransform(Vector2 position, Vector2 size)
         {
-            var xlocal = -(this._size.x / 2f) + (size.x / 2f) + position.x;
-            var ylocal = (this._size.y / 2f) - (size.y / 2f) - position.y;
+            var xlocal = -(_size.x / 2f) + (size.x / 2f) + position.x;
+            var ylocal = (_size.y / 2f) - (size.y / 2f) - position.y;
             return new Vector3(xlocal, ylocal);
         }
 
         public void AddLayoutCallback(UnityAction callback)
         {
-            this.onLayout.AddListener(callback);
+            onLayout.AddListener(callback);
         }
 
         public void RemoveLayoutCallback(UnityAction callback)
         {
-            this.onLayout.RemoveListener(callback);
+            onLayout.RemoveListener(callback);
         }
     }
 }

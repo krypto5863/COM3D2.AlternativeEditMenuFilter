@@ -18,7 +18,7 @@ namespace COM3D2.SimpleUI.Implementation
             set
             {
                 _value = value;
-                this.SetDirty();
+                SetDirty();
             }
         }
 
@@ -26,12 +26,12 @@ namespace COM3D2.SimpleUI.Implementation
 
         public string[] Choices
         {
-            get => this._choices;
+            get => _choices;
             set
             {
-                this._choices = value;
-                this.UpdateChoiceButtons();
-                this.SetDirty();
+                _choices = value;
+                UpdateChoiceButtons();
+                SetDirty();
             }
         }
 
@@ -88,30 +88,30 @@ namespace COM3D2.SimpleUI.Implementation
         public override void InitControl()
         {
             buttonLayout = gameObject.AddComponent<SimpleAutoLayout>();
-            buttonLayout.SetSize(this.size, false);
+            buttonLayout.SetSize(size, false);
         }
 
         public void UpdateChoiceButtons()
         {
-            foreach (var btn in this.buttonList)
+            foreach (var btn in buttonList)
             {
                 Destroy(btn.gameObject);
             }
 
-            this.buttonList.Clear();
+            buttonList.Clear();
 
             for (var i = 0; i < Choices.Length; i++)
             {
                 var choice = Choices[i];
                 var choiceI = i; // snapshot i
-                var btn = buttonLayout.Button(new Vector2(20, this.size.y), choice, delegate ()
+                var btn = buttonLayout.Button(new Vector2(20, size.y), choice, delegate ()
                 {
-                    this.Value = choiceI;
-                    this.SetDirty();
-                    this.onSelect.Invoke(this.Value);
+                    Value = choiceI;
+                    SetDirty();
+                    onSelect.Invoke(Value);
                 });
 
-                this.buttonList.Add((SimpleButton)btn);
+                buttonList.Add((SimpleButton)btn);
             }
 
             SetDirty();
@@ -119,37 +119,37 @@ namespace COM3D2.SimpleUI.Implementation
 
         public override void UpdateUI()
         {
-            var numButtons = this.Choices.Length;
-            var totalWidthWithoutSpacing = this.size.x - (this.buttonLayout.spacing * (numButtons - 1));
+            var numButtons = Choices.Length;
+            var totalWidthWithoutSpacing = size.x - (buttonLayout.spacing * (numButtons - 1));
             var buttonWidth = totalWidthWithoutSpacing / numButtons;
 
             for (var i = 0; i < buttonList.Count; i++)
             {
                 var button = buttonList[i];
-                button.activeColor = this.hoverColor;
-                button.SetSize(new Vector2(buttonWidth, this.size.y), false);
-                if (i == this.Value)
+                button.activeColor = hoverColor;
+                button.SetSize(new Vector2(buttonWidth, size.y), false);
+                if (i == Value)
                 {
-                    button.defaultColor = this.selectedColor;
+                    button.defaultColor = selectedColor;
                 }
                 else
                 {
-                    button.defaultColor = this.defaultColor;
+                    button.defaultColor = defaultColor;
                 }
             }
 
-            buttonLayout.SetSize(this.size, false);
+            buttonLayout.SetSize(size, false);
             buttonLayout.SetDirty();
         }
 
         public void AddChangeCallback(UnityAction<int> callback)
         {
-            this.onSelect.AddListener(callback);
+            onSelect.AddListener(callback);
         }
 
         public void RemoveChangeCallback(UnityAction<int> callback)
         {
-            this.onSelect.RemoveListener(callback);
+            onSelect.RemoveListener(callback);
         }
     }
 }

@@ -31,11 +31,11 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private MenuSearchConfig config;
 
-        private bool SearchInName { get => SearchTextMode == SearchTextModeEnum.NAME || SearchTextMode == SearchTextModeEnum.ALL; }
-        private bool SearchInInfo { get => SearchTextMode == SearchTextModeEnum.DESCRIPTION || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInName => SearchTextMode == SearchTextModeEnum.NAME || SearchTextMode == SearchTextModeEnum.ALL;
+        private bool SearchInInfo => SearchTextMode == SearchTextModeEnum.DESCRIPTION || SearchTextMode == SearchTextModeEnum.ALL;
 
-        private bool SearchInFilename { get => SearchTextMode == SearchTextModeEnum.FILENAME || SearchTextMode == SearchTextModeEnum.ALL; }
-        private bool SearchInDirectoryName { get => SearchTextMode == SearchTextModeEnum.DIRECTORYNAME || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInFilename => SearchTextMode == SearchTextModeEnum.FILENAME || SearchTextMode == SearchTextModeEnum.ALL;
+        private bool SearchInDirectoryName => SearchTextMode == SearchTextModeEnum.DIRECTORYNAME || SearchTextMode == SearchTextModeEnum.ALL;
 
         private bool SearchLocalized
         {
@@ -43,15 +43,9 @@ namespace COM3D2.AlternativeEditMenuFilter
             set => config.SearchLocalized.Value = value;
         }
 
-        private bool SearchMTL
-        {
-            get => SearchLocalized && config.SearchMTL.Value;
-        }
+        private bool SearchMTL => SearchLocalized && config.SearchMTL.Value;
 
-        private bool SendMTL
-        {
-            get => SearchMTL && config.SendMTL.Value;
-        }
+        private bool SendMTL => SearchMTL && config.SendMTL.Value;
 
         private bool SearchAllTerms
         {
@@ -59,20 +53,11 @@ namespace COM3D2.AlternativeEditMenuFilter
             set => config.SearchAllTerms.Value = value;
         }
 
-        private bool IncludeMods
-        {
-            get => ItemTypeFilter == ItemTypeFilterEnum.MOD || ItemTypeFilter == ItemTypeFilterEnum.ALL;
-        }
+        private bool IncludeMods => ItemTypeFilter == ItemTypeFilterEnum.MOD || ItemTypeFilter == ItemTypeFilterEnum.ALL;
 
-        private bool IncludeVanilla
-        {
-            get => ItemTypeFilter == ItemTypeFilterEnum.VANILLA || ItemTypeFilter == ItemTypeFilterEnum.ALL;
-        }
+        private bool IncludeVanilla => ItemTypeFilter == ItemTypeFilterEnum.VANILLA || ItemTypeFilter == ItemTypeFilterEnum.ALL;
 
-        private bool IncludeCompat
-        {
-            get => ItemTypeFilter == ItemTypeFilterEnum.COMPAT || ItemTypeFilter == ItemTypeFilterEnum.ALL;
-        }
+        private bool IncludeCompat => ItemTypeFilter == ItemTypeFilterEnum.COMPAT || ItemTypeFilter == ItemTypeFilterEnum.ALL;
 
         private bool IgnoreCase
         {
@@ -92,24 +77,17 @@ namespace COM3D2.AlternativeEditMenuFilter
             set => config.SearchTextMode.Value = value;
         }
 
-        private ITranslationProvider TranslationProvider
-        {
-            get => AlternateEditMenuFilterPlugin.Instance.TranslationProvider;
-        }
+        private ITranslationProvider TranslationProvider => AlternateEditMenuFilterPlugin.Instance.TranslationProvider;
 
         private readonly List<PendingTranslation> pendingTranslations = new List<PendingTranslation>();
 
-        private void Awake()
-        {
-        }
-
         public void Init(MenuSearchConfig config, Vector3 localPosition)
         {
-            this.controller = new EditMenuPanelController(this.gameObject.transform.parent.gameObject);
+            controller = new EditMenuPanelController(gameObject.transform.parent.gameObject);
             this.config = config;
-            this.gameObject.transform.localPosition = localPosition;
+            gameObject.transform.localPosition = localPosition;
 
-            this.History.AddRange(
+            History.AddRange(
                 this.config.History.Value
                 .Split('\n')
                 .Select(s => s.Trim())
@@ -118,19 +96,19 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void Start()
         {
-            Assert.IsNotNull(this.config, "Not properly initialized");
-            this.BuildUI();
+            Assert.IsNotNull(config, "Not properly initialized");
+            BuildUI();
         }
 
         private void OnEnable()
         {
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void OnDisable()
         {
             Log.LogVerbose("Saving search history");
-            this.config.History.Value = String.Join("\n", this.History.ToArray());
+            config.History.Value = String.Join("\n", History.ToArray());
         }
 
         private void Update()
@@ -138,7 +116,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             if (updateItemListQueued)
             {
                 updateItemListQueued = false;
-                this.TranslationProvider.ResetAsyncQueue();
+                TranslationProvider.ResetAsyncQueue();
                 UpdateItemList();
             }
         }
@@ -147,7 +125,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             var panelHeight = 40;
 
-            var ui = SimpleUIRoot.Create(this.gameObject, 0, 0);
+            var ui = SimpleUIRoot.Create(gameObject, 0, 0);
 
             var box = ui.Box(new Rect(0, 0, 1050, panelHeight + 16), "");
 
@@ -160,17 +138,17 @@ namespace COM3D2.AlternativeEditMenuFilter
             historyDropdown = area.Dropdown(
                 new Vector2(50, panelHeight),
                 "Hist", null,
-                this.History,
-                this.OnHistoryDropdownChange);
+                History,
+                OnHistoryDropdownChange);
 
             searchTextField = area.TextField(new Vector2(250, panelHeight), "");
-            searchTextField.AddSubmitCallback(this.SearchTextfieldSubmit);
+            searchTextField.AddSubmitCallback(SearchTextfieldSubmit);
 
-            area.Button(new Vector2(70, panelHeight), "Reset", this.ResetButtonClick);
+            area.Button(new Vector2(70, panelHeight), "Reset", ResetButtonClick);
 
-            caseSensitivityButton = area.Button(new Vector2(50, panelHeight), "Aa", this.CaseSensitivityButtonClick);
+            caseSensitivityButton = area.Button(new Vector2(50, panelHeight), "Aa", CaseSensitivityButtonClick);
 
-            termIncludeButton = area.Button(new Vector2(50, panelHeight), "Or", this.TermIncludeButtonClick);
+            termIncludeButton = area.Button(new Vector2(50, panelHeight), "Or", TermIncludeButtonClick);
 
             area.GenericDropdown(new Vector2(50, panelHeight), "ALL")
                 .Choice(SearchTextModeEnum.ALL, "[All] text", "All")
@@ -178,14 +156,14 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Choice(SearchTextModeEnum.DESCRIPTION, "[Info]", "Info")
                 .Choice(SearchTextModeEnum.FILENAME, "[Fn] Filename", "Fn")
                 //                .Choice(SearchTextModeEnum.DIRECTORYNAME, "[Dir] Full directory path", "Dir")
-                .SetValue(this.SearchTextMode)
+                .SetValue(SearchTextMode)
                 .SetUpdateTextOnValuechange(true)
                 .AddChangeCallback(o =>
                 {
                     if (o is SearchTextModeEnum mode)
                     {
-                        this.SearchTextMode = mode;
-                        this.QueueUpdateItemList();
+                        SearchTextMode = mode;
+                        QueueUpdateItemList();
                         Log.LogVerbose("New mode is {0}", mode);
                     }
                 });
@@ -195,15 +173,15 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Choice(ItemTypeFilterEnum.VANILLA, "[COM] Vanilla COM3D2", "COM")
                 .Choice(ItemTypeFilterEnum.COMPAT, "[CM] Compat/CM", "CM")
                 .Choice(ItemTypeFilterEnum.MOD, "[Mod]s", "Mod")
-                .SetValue(this.ItemTypeFilter)
+                .SetValue(ItemTypeFilter)
                 .SetUpdateTextOnValuechange(true);
 
             itemTypeFilterDropdown.AddChangeCallback(o =>
                 {
                     if (o is ItemTypeFilterEnum t)
                     {
-                        this.ItemTypeFilter = t;
-                        this.QueueUpdateItemList();
+                        ItemTypeFilter = t;
+                        QueueUpdateItemList();
                         Log.LogVerbose("New filter type is {0}", t);
                     }
                 });
@@ -219,69 +197,69 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void TermIncludeButtonClick()
         {
-            this.SearchAllTerms = !this.SearchAllTerms;
+            SearchAllTerms = !SearchAllTerms;
             UpdateToggles();
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void CaseSensitivityButtonClick()
         {
-            this.IgnoreCase = !this.IgnoreCase;
+            IgnoreCase = !IgnoreCase;
             UpdateToggles();
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void UpdateToggles()
         {
-            if (this.SearchAllTerms)
+            if (SearchAllTerms)
             {
-                this.termIncludeButton.text = "AND";
+                termIncludeButton.text = "AND";
             }
             else
             {
-                this.termIncludeButton.text = "OR";
+                termIncludeButton.text = "OR";
             }
 
-            if (this.IgnoreCase)
+            if (IgnoreCase)
             {
-                this.caseSensitivityButton.defaultColor = this.caseSensitivityButton.hoverColor = Color.white;
+                caseSensitivityButton.defaultColor = caseSensitivityButton.hoverColor = Color.white;
             }
             else
             {
-                this.caseSensitivityButton.defaultColor = this.caseSensitivityButton.hoverColor = Color.gray;
+                caseSensitivityButton.defaultColor = caseSensitivityButton.hoverColor = Color.gray;
             }
         }
 
         private void SearchTextfieldSubmit(string terms)
         {
             terms = terms.Trim();
-            this.search = terms;
+            search = terms;
             if (terms == "")
             {
-                this.ResetButtonClick();
+                ResetButtonClick();
                 return;
             }
             AddToHistory(terms);
-            this.QueueUpdateItemList();
+            QueueUpdateItemList();
         }
 
         private void AddToHistory(string terms)
         {
-            var index = this.History.IndexOf(terms);
+            var index = History.IndexOf(terms);
             if (index >= 0)
             {
-                this.History.RemoveAt(index);
+                History.RemoveAt(index);
             }
 
-            this.History.Insert(0, terms);
+            History.Insert(0, terms);
 
-            var maxHistory = this.config.MaxHistory.Value;
-            if (this.History.Count > maxHistory)
+            var maxHistory = config.MaxHistory.Value;
+            if (History.Count > maxHistory)
             {
-                this.History.RemoveRange(maxHistory, this.History.Count - maxHistory);
+                History.RemoveRange(maxHistory, History.Count - maxHistory);
             }
 
-            this.historyDropdown.Choices = this.History;
+            historyDropdown.Choices = History;
         }
 
         private void QueueUpdateItemList()
@@ -292,15 +270,15 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void UpdateItemList()
         {
-            var termList = this.search
+            var termList = search
                 .Split(' ')
                 .Where(t => !string.IsNullOrEmpty(t))
                 .Select(t => t.Trim())
                 .ToArray();
 
             Log.LogVerbose("Clearing pending translations");
-            this.pendingTranslations.Clear();
-            this.TranslationProvider.ResetAsyncQueue();
+            pendingTranslations.Clear();
+            TranslationProvider.ResetAsyncQueue();
 
             Log.LogVerbose("Performing filter");
             foreach (var item in controller.GetAllItems())
@@ -345,7 +323,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
             if (SearchInDirectoryName)
             {
-                var directoryName = this.GetDirectoryName(item.Filename);
+                var directoryName = GetDirectoryName(item.Filename);
                 inDirectoryname = StringContains(directoryName, termList);
             }
 
@@ -357,7 +335,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             if (SendMTL)
             {
                 Log.LogVerbose("Sending string for translation: {0}", text);
-                this.pendingTranslations.Add(new PendingTranslation()
+                pendingTranslations.Add(new PendingTranslation()
                 {
                     Item = item,
                     Result = TranslationProvider.TranslateAsync(text)
@@ -440,11 +418,11 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         private void ResetButtonClick()
         {
-            this.search = "";
-            this.searchTextField.Value = "";
-            this.ItemTypeFilter = ItemTypeFilterEnum.ALL;
-            this.itemTypeFilterDropdown.SetValue(this.ItemTypeFilter);
-            this.TranslationProvider.ResetAsyncQueue();
+            search = "";
+            searchTextField.Value = "";
+            ItemTypeFilter = ItemTypeFilterEnum.ALL;
+            itemTypeFilterDropdown.SetValue(ItemTypeFilter);
+            TranslationProvider.ResetAsyncQueue();
             controller.ShowAll();
             controller.ResetView();
         }

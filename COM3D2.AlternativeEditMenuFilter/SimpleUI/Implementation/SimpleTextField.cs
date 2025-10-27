@@ -16,43 +16,43 @@ namespace COM3D2.SimpleUI.Implementation
 
         public string Value
         {
-            get => this.uiInput.value;
-            set => this.uiInput.value = value;
+            get => uiInput.value;
+            set => uiInput.value = value;
         }
 
         public override void InitControl()
         {
             var atlas = UIUtils.GetAtlas("AtlasCommon");
-            this.bgSprite = NGUITools.AddSprite(this.gameObject, atlas, "cm3d2_common_plate_white");
-            this.bgSprite.color = new Color(.2f, .2f, .2f);
+            bgSprite = NGUITools.AddSprite(gameObject, atlas, "cm3d2_common_plate_white");
+            bgSprite.color = new Color(.2f, .2f, .2f);
 
-            this.uiSprite = NGUITools.AddSprite(this.gameObject, atlas, "cm3d2_common_lineframe_white");
-            this.uiSprite.color = Color.gray;
-            NGUITools.AddWidgetCollider(this.uiSprite.gameObject);
+            uiSprite = NGUITools.AddSprite(gameObject, atlas, "cm3d2_common_lineframe_white");
+            uiSprite.color = Color.gray;
+            NGUITools.AddWidgetCollider(uiSprite.gameObject);
 
-            this.uiLabel = NGUITools.AddWidget<UILabel>(uiSprite.gameObject);
+            uiLabel = NGUITools.AddWidget<UILabel>(uiSprite.gameObject);
             uiLabel.trueTypeFont = UIUtils.GetFont("NotoSansCJKjp-DemiLight");
             uiLabel.rawPivot = UIWidget.Pivot.Left;
 
-            this.uiInput = uiSprite.gameObject.AddComponent<UIInput>();
-            this.uiInput.label = this.uiLabel;
-            this.uiInput.value = "";
-            this.uiInput.activeTextColor = Color.white;
-            this.uiInput.caretColor = Color.gray;
-            this.uiInput.onReturnKey = UIInput.OnReturnKey.Submit;
+            uiInput = uiSprite.gameObject.AddComponent<UIInput>();
+            uiInput.label = uiLabel;
+            uiInput.value = "";
+            uiInput.activeTextColor = Color.white;
+            uiInput.caretColor = Color.gray;
+            uiInput.onReturnKey = UIInput.OnReturnKey.Submit;
 
-            EventDelegate.Add(uiInput.onChange, new EventDelegate.Callback(this.ChangeEvent));
-            EventDelegate.Add(uiInput.onSubmit, new EventDelegate.Callback(this.SubmitEvent));
+            EventDelegate.Add(uiInput.onChange, new EventDelegate.Callback(ChangeEvent));
+            EventDelegate.Add(uiInput.onSubmit, new EventDelegate.Callback(SubmitEvent));
         }
 
         private void ChangeEvent()
         {
-            onChange.Invoke(this.Value);
+            onChange.Invoke(Value);
         }
 
         private void SubmitEvent()
         {
-            onSubmit.Invoke(this.Value);
+            onSubmit.Invoke(Value);
         }
 
         public override void UpdateUI()

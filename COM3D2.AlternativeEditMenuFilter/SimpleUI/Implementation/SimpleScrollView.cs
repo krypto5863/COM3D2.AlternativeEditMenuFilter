@@ -123,21 +123,21 @@ namespace COM3D2.SimpleUI.Implementation
 
         protected void SetupInnerLayout()
         {
-            innerLayout = NGUITools.AddChild<SimpleFixedLayout>(this.gameObject);
+            innerLayout = NGUITools.AddChild<SimpleFixedLayout>(gameObject);
             innerLayout.Init(null);
-            innerLayout.SetSize(this.size, false);
+            innerLayout.SetSize(size, false);
         }
 
         protected void SetupScrollBar()
         {
-            uiScrollBar = NGUITools.AddChild<UIScrollBar>(this.gameObject);
+            uiScrollBar = NGUITools.AddChild<UIScrollBar>(gameObject);
         }
 
         protected void SetupPanel()
         {
             uiPanel = innerLayout.gameObject.GetComponent<UIPanel>();
             uiPanel.clipping = UIDrawCall.Clipping.SoftClip;
-            uiPanel.baseClipRegion = new Vector4(0, 0, this.width, this.height);
+            uiPanel.baseClipRegion = new Vector4(0, 0, width, height);
         }
 
         public override void UpdateUI()

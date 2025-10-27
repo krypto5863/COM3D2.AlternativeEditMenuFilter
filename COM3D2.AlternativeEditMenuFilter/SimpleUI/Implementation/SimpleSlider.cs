@@ -93,12 +93,12 @@ namespace COM3D2.SimpleUI.Implementation
             uiSlider.foregroundWidget = uiForeground;
             uiSlider.thumb = objThumb.transform;
 
-            EventDelegate.Add(uiSlider.onChange, new EventDelegate.Callback(this.OnSliderChange));
+            EventDelegate.Add(uiSlider.onChange, new EventDelegate.Callback(OnSliderChange));
         }
 
         private void OnSliderChange()
         {
-            onChange.Invoke(this.Value);
+            onChange.Invoke(Value);
         }
 
         public override void UpdateUI()
@@ -106,32 +106,32 @@ namespace COM3D2.SimpleUI.Implementation
             int controlWidth;
             int controlHeight;
 
-            if (this.direction == SliderDirection.HORIZONTAL)
+            if (direction == SliderDirection.HORIZONTAL)
             {
-                controlWidth = Mathf.FloorToInt(this.size.x + 0.5f) - 10;
-                controlHeight = this.thickness;
+                controlWidth = Mathf.FloorToInt(size.x + 0.5f) - 10;
+                controlHeight = thickness;
             }
             else
             {
-                controlWidth = this.thickness;
-                controlHeight = Mathf.FloorToInt(this.size.y + 0.5f) - 10;
+                controlWidth = thickness;
+                controlHeight = Mathf.FloorToInt(size.y + 0.5f) - 10;
             }
 
             uiForeground.SetDimensions(controlWidth, controlHeight);
 
             uiBackground.SetDimensions(controlWidth, controlHeight);
-            uiBackgroundCollider.size = this.size;
+            uiBackgroundCollider.size = size;
             uiBackgroundBtn.defaultColor = new Color(.5f, .5f, .5f);
             uiBackgroundBtn.hover = new Color(.8f, .8f, .8f);
             uiBackgroundBtn.pressed = new Color(.8f, .8f, .8f);
 
-            uiThumb.SetDimensions(this.thickness + 6, this.thickness + 6);
-            uiThumbCollider.size = new Vector2(this.thickness + 6, this.size.y);
+            uiThumb.SetDimensions(thickness + 6, thickness + 6);
+            uiThumbCollider.size = new Vector2(thickness + 6, size.y);
             uiThumbBtn.defaultColor = new Color(.8f, .8f, .8f);
             uiThumbBtn.hover = Color.white;
             uiThumbBtn.pressed = Color.white;
 
-            uiSlider.fillDirection = this.direction == SliderDirection.HORIZONTAL ? UIProgressBar.FillDirection.LeftToRight : UIProgressBar.FillDirection.BottomToTop;
+            uiSlider.fillDirection = direction == SliderDirection.HORIZONTAL ? UIProgressBar.FillDirection.LeftToRight : UIProgressBar.FillDirection.BottomToTop;
             uiSlider.ForceUpdate();
         }
 
@@ -139,7 +139,7 @@ namespace COM3D2.SimpleUI.Implementation
         {
             _minValue = minimum;
             _maxValue = maximum;
-            this.Value = current;
+            Value = current;
         }
 
         public void AddChangeCallback(UnityAction<float> callback)
