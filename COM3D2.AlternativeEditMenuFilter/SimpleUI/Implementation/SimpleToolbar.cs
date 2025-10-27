@@ -1,22 +1,17 @@
-﻿using System;
+﻿using COM3D2.SimpleUI.Events;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using UnityEngine;
-
-
-using COM3D2.SimpleUI.Events;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleToolbar : SimpleControl, IToolbar
     {
-        SimpleAutoLayout buttonLayout;
-        readonly List<SimpleButton> buttonList = new List<SimpleButton>();
+        private SimpleAutoLayout buttonLayout;
+        private readonly List<SimpleButton> buttonList = new List<SimpleButton>();
 
-        int _value;
+        private int _value;
+
         public int Value
         {
             get => _value;
@@ -27,7 +22,8 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        string[] _choices;
+        private string[] _choices;
+
         public string[] Choices
         {
             get => this._choices;
@@ -39,16 +35,20 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        Color _defaultColor = new Color(.4f, .4f, .4f);
-        public Color defaultColor {
+        private Color _defaultColor = new Color(.4f, .4f, .4f);
+
+        public Color defaultColor
+        {
             get => _defaultColor;
-            set {
+            set
+            {
                 _defaultColor = value;
                 SetDirty();
             }
         }
 
-        Color _selectedColor = new Color(.8f, .8f, .8f);
+        private Color _selectedColor = new Color(.8f, .8f, .8f);
+
         public Color selectedColor
         {
             get => _selectedColor;
@@ -59,7 +59,8 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        Color _hoverColor = Color.white;
+        private Color _hoverColor = Color.white;
+
         public Color hoverColor
         {
             get => _hoverColor;
@@ -70,17 +71,19 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        Color _disabledColor = new Color(.1f, .1f, .1f);
-        public Color disabledColor { 
+        private Color _disabledColor = new Color(.1f, .1f, .1f);
+
+        public Color disabledColor
+        {
             get => _disabledColor;
             set
             {
                 _disabledColor = value;
                 SetDirty();
-            } 
+            }
         }
 
-        readonly ToolbarSelectedEvent onSelect = new ToolbarSelectedEvent();
+        private readonly ToolbarSelectedEvent onSelect = new ToolbarSelectedEvent();
 
         public override void InitControl()
         {
@@ -94,10 +97,10 @@ namespace COM3D2.SimpleUI.Implementation
             {
                 Destroy(btn.gameObject);
             }
-            
+
             this.buttonList.Clear();
 
-            for (var i=0; i < Choices.Length; i++)
+            for (var i = 0; i < Choices.Length; i++)
             {
                 var choice = Choices[i];
                 var choiceI = i; // snapshot i
@@ -110,7 +113,7 @@ namespace COM3D2.SimpleUI.Implementation
 
                 this.buttonList.Add((SimpleButton)btn);
             }
-            
+
             SetDirty();
         }
 
@@ -128,7 +131,8 @@ namespace COM3D2.SimpleUI.Implementation
                 if (i == this.Value)
                 {
                     button.defaultColor = this.selectedColor;
-                } else
+                }
+                else
                 {
                     button.defaultColor = this.defaultColor;
                 }

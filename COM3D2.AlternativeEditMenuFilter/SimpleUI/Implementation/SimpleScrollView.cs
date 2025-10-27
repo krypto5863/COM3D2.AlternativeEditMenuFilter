@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
-    public class SimpleScrollView: SimpleControl, IFixedLayout, IScrollView
+    public class SimpleScrollView : SimpleControl, IFixedLayout, IScrollView
     {
-        SimpleFixedLayout innerLayout;
-        UIScrollView uiScrollView;
-        UIPanel uiPanel;
-        UIScrollBar uiScrollBar;
+        private SimpleFixedLayout innerLayout;
+        private UIScrollView uiScrollView;
+        private UIPanel uiPanel;
+        private UIScrollBar uiScrollBar;
 
         #region IFixedLayout innerLayout wrapper
 
@@ -112,7 +109,7 @@ namespace COM3D2.SimpleUI.Implementation
             return innerLayout.VerticalSlider(rect, initial, minimum, maximum, onChange);
         }
 
-        #endregion
+        #endregion IFixedLayout innerLayout wrapper
 
         public override void InitControl()
         {

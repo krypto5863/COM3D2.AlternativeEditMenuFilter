@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace COM3D2.SimpleUI.Implementation
 {
-    public class AtlasHelper: MonoBehaviour
+    public class AtlasHelper : MonoBehaviour
     {
-        readonly Dictionary<string, UIAtlas> lookup = new Dictionary<string, UIAtlas>();
+        private readonly Dictionary<string, UIAtlas> lookup = new Dictionary<string, UIAtlas>();
 
-        bool loadComplete = false;
-        string[] pendingAtlasLoadList;
+        private bool loadComplete = false;
+        private string[] pendingAtlasLoadList;
 
         public void Init(string[] atlasNameList)
         {
             this.pendingAtlasLoadList = atlasNameList;
         }
-
 
         public void Start()
         {
@@ -30,15 +25,8 @@ namespace COM3D2.SimpleUI.Implementation
         {
             if (!loadComplete)
             {
-                
             }
             return null;
         }
-
-
-
-
-
-
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace COM3D2.AlternativeEditMenuFilter
+﻿namespace COM3D2.AlternativeEditMenuFilter
 {
     public interface ITranslationResult
     {
@@ -12,7 +7,7 @@ namespace COM3D2.AlternativeEditMenuFilter
         bool IsTranslationSuccessful { get; }
     }
 
-    public interface ITranslationAsyncResult: ITranslationResult
+    public interface ITranslationAsyncResult : ITranslationResult
     {
         bool IsReady { get; }
     }
@@ -20,7 +15,9 @@ namespace COM3D2.AlternativeEditMenuFilter
     public interface ITranslationProvider
     {
         ITranslationResult Translate(string text);
+
         ITranslationAsyncResult TranslateAsync(string text);
+
         void ResetAsyncQueue();
     }
 }

@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleGenericDropdown : SimpleDropdown, IGenericDropdown
     {
-        readonly ChangeEvent changeEvent = new ChangeEvent();
+        private readonly ChangeEvent changeEvent = new ChangeEvent();
 
-        public new virtual object Value
+        public virtual new object Value
         {
             get
             {
@@ -55,7 +53,8 @@ namespace COM3D2.SimpleUI.Implementation
             return this;
         }
 
-        bool updateTextOnValue = false;
+        private bool updateTextOnValue = false;
+
         public bool UpdateTextOnValue
         {
             get => updateTextOnValue;
@@ -74,7 +73,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         protected virtual void uiPopupListDataChange()
         {
-            if(this.ready)
+            if (this.ready)
             {
                 if (this.UpdateTextOnValue)
                 {
@@ -82,7 +81,6 @@ namespace COM3D2.SimpleUI.Implementation
                 }
 
                 changeEvent.Invoke(this.Value);
-
             }
         }
 
@@ -144,12 +142,10 @@ namespace COM3D2.SimpleUI.Implementation
             public object Value { get; set; }
             public string ItemName { get; set; }
             public string SelectedName { get; set; }
-
         }
 
-        public class ChangeEvent: UnityEvent<object>
+        public class ChangeEvent : UnityEvent<object>
         {
-
         }
     }
 }

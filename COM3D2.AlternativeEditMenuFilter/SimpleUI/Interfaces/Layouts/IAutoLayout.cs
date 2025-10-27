@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI
 {
-    public interface IAutoLayout: IControlContainer, ILayout
+    public interface IAutoLayout : IControlContainer, ILayout
     {
         IBox Box(Vector2 size, string content);
 

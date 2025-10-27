@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI
 {
@@ -16,28 +11,23 @@ namespace COM3D2.SimpleUI
         void RemoveChangeCallback(UnityAction<T> callback);
     }
 
-    public interface IBoolControlValue: IControlValue<bool>
+    public interface IBoolControlValue : IControlValue<bool>
     {
-
     }
 
-    public interface IStringControlValue: IControlValue<string>
+    public interface IStringControlValue : IControlValue<string>
     {
-
     }
 
-    public interface IIntControlValue: IControlValue<int>
+    public interface IIntControlValue : IControlValue<int>
     {
-
     }
 
-    public interface IFloatControlValue: IControlValue<float>
+    public interface IFloatControlValue : IControlValue<float>
     {
-
     }
 
-    public interface IObjectControlValue: IControlValue<object>
+    public interface IObjectControlValue : IControlValue<object>
     {
-
     }
 }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
-using COM3D2.SimpleUI.Events;
+﻿using UnityEngine;
 
 namespace COM3D2.SimpleUI
 {
-    public interface IToggle: IContentControl, IBoolControlValue
+    public interface IToggle : IContentControl, IBoolControlValue
     {
         Color defaultColor { get; set; }
         Color defaultActiveColor { get; set; }

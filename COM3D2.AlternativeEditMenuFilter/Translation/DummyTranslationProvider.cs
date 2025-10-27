@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace COM3D2.AlternativeEditMenuFilter
+﻿namespace COM3D2.AlternativeEditMenuFilter
 {
-    class DummyTranslationResult : ITranslationResult, ITranslationAsyncResult
+    internal class DummyTranslationResult : ITranslationResult, ITranslationAsyncResult
     {
         public string OriginalText { get; set; }
 
@@ -13,12 +8,13 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public bool IsTranslationSuccessful { get; set; }
 
-        public bool IsReady {
+        public bool IsReady
+        {
             get; set;
         }
     }
 
-    class DummyTranslationProvider : ITranslationProvider
+    internal class DummyTranslationProvider : ITranslationProvider
     {
         public ITranslationResult Translate(string text)
         {

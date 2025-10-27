@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.Linq.Expressions;
+using System.Reflection;
 using UnityEngine.Events;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace COM3D2.SimpleUI.Extensions
 {
@@ -19,7 +15,6 @@ namespace COM3D2.SimpleUI.Extensions
             obj.AddChangeCallback(value =>
             {
                 prop.SetValue(target, value, null);
-
             });
 
             return obj;
@@ -42,7 +37,7 @@ namespace COM3D2.SimpleUI.Extensions
         }
 
         public static R OnChange<R>(this R obj, UnityAction<bool> action)
-            where R: IBoolControlValue
+            where R : IBoolControlValue
         {
             obj.AddChangeCallback(action);
             return obj;
@@ -68,6 +63,5 @@ namespace COM3D2.SimpleUI.Extensions
             obj.AddChangeCallback(action);
             return obj;
         }
-
     }
 }

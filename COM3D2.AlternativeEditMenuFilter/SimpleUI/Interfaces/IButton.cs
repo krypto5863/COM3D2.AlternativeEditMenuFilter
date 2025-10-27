@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI
 {
-    public interface IButton: IContentControl
+    public interface IButton : IContentControl
     {
         bool isEnabled { get; set; }
 

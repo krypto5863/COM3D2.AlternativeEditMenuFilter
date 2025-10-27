@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI
 {
-    public interface IFixedLayout: IControlContainer, ILayout
+    public interface IFixedLayout : IControlContainer, ILayout
     {
         IBox Box(Rect rect, string content);
-       
-        IButton Button(Rect rect, string content, UnityAction onClick=null);
+
+        IButton Button(Rect rect, string content, UnityAction onClick = null);
 
         ILabel Label(Rect rect, string content);
 
-        ITextField TextField(Rect rect, string initial, UnityAction<string> onChange=null);
+        ITextField TextField(Rect rect, string initial, UnityAction<string> onChange = null);
 
         ITextArea TextArea(Rect rect, string initial, UnityAction<string> onChange = null);
 

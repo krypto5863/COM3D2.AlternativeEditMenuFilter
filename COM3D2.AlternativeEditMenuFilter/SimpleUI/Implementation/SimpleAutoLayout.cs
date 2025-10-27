@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
-
-
 
 namespace COM3D2.SimpleUI.Implementation
 {
@@ -14,7 +9,8 @@ namespace COM3D2.SimpleUI.Implementation
     {
         public int spacing { get; set; } = 10;
 
-        LayoutDirection _layoutDirection = LayoutDirection.HORIZONTAL;
+        private LayoutDirection _layoutDirection = LayoutDirection.HORIZONTAL;
+
         public LayoutDirection layoutDirection
         {
             get => _layoutDirection;
@@ -44,7 +40,7 @@ namespace COM3D2.SimpleUI.Implementation
             return btn;
         }
 
-        public IButton Button(Vector2 size, string content, UnityAction callback=null)
+        public IButton Button(Vector2 size, string content, UnityAction callback = null)
         {
             var btn = Child<SimpleButton>(size);
             btn.text = content;
@@ -57,7 +53,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         public IFixedLayout Group(Vector2 size)
         {
-            return  Child<SimpleFixedLayout>(size);
+            return Child<SimpleFixedLayout>(size);
         }
 
         public ISlider Slider(Vector2 size, SimpleSlider.SliderDirection direction, float initial, float minimum, float maximum, UnityAction<float> onChange)
@@ -70,7 +66,6 @@ namespace COM3D2.SimpleUI.Implementation
                 c.AddChangeCallback(onChange);
             }
             return c;
-
         }
 
         public ISlider HorizontalSlider(Vector2 size, float initial, float minimum, float maximum, UnityAction<float> onChange)
@@ -105,7 +100,8 @@ namespace COM3D2.SimpleUI.Implementation
                 if (this.layoutDirection == LayoutDirection.HORIZONTAL)
                 {
                     currentX += component.size.x + this.spacing;
-                } else
+                }
+                else
                 {
                     currentY += component.size.y + this.spacing;
                 }
@@ -146,11 +142,11 @@ namespace COM3D2.SimpleUI.Implementation
             if (onChange != null)
             {
                 control.AddChangeCallback(onChange);
-            } 
+            }
             return control;
         }
 
-        public IToggle Toggle(Vector2 size, string content, bool initial, UnityAction<bool> onSelected=null)
+        public IToggle Toggle(Vector2 size, string content, bool initial, UnityAction<bool> onSelected = null)
         {
             var component = Child<SimpleToggle>(size);
             component.text = content;
@@ -169,7 +165,7 @@ namespace COM3D2.SimpleUI.Implementation
             var component = Child<SimpleToolbar>(size);
             component.Choices = toolbarStrings;
             component.Value = initial;
-            if(onSelect != null)
+            if (onSelect != null)
             {
                 component.AddChangeCallback(onSelect);
             }
@@ -182,7 +178,8 @@ namespace COM3D2.SimpleUI.Implementation
             return Slider(size, SimpleSlider.SliderDirection.VERTICAL, initial, minimum, maximum, onChange);
         }
 
-        public enum LayoutDirection {
+        public enum LayoutDirection
+        {
             VERTICAL,
             HORIZONTAL,
         }
@@ -204,12 +201,11 @@ namespace COM3D2.SimpleUI.Implementation
         {
             var o = Child<SimpleGenericDropdown>(size);
             o.text = content;
-            if(onChange != null)
+            if (onChange != null)
             {
                 o.AddChangeCallback(onChange);
             }
             return o;
-
         }
     }
 }

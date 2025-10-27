@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-using COM3D2.SimpleUI;
+﻿using COM3D2.SimpleUI;
 using COM3D2.SimpleUI.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using UnityEngine;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
-    class PendingTranslation
+    internal class PendingTranslation
     {
         public EditMenuPanelItem Item { get; set; }
         public ITranslationAsyncResult Result { get; set; }
@@ -19,75 +16,90 @@ namespace COM3D2.AlternativeEditMenuFilter
 
     public class EditMenuPanelFilter : MonoBehaviour
     {
-        EditMenuPanelController controller;
+        private EditMenuPanelController controller;
 
-        string search = "";
-        bool updateItemListQueued = false;
+        private string search = "";
+        private bool updateItemListQueued = false;
 
-        IButton caseSensitivityButton;
-        IButton termIncludeButton;
-        ITextField searchTextField;
-        IDropdown historyDropdown;
-        IGenericDropdown itemTypeFilterDropdown;
+        private IButton caseSensitivityButton;
+        private IButton termIncludeButton;
+        private ITextField searchTextField;
+        private IDropdown historyDropdown;
+        private IGenericDropdown itemTypeFilterDropdown;
 
-        readonly List<string> History = new List<string>();
+        private readonly List<string> History = new List<string>();
 
-        MenuSearchConfig config;
+        private MenuSearchConfig config;
 
-        bool SearchInName { get => SearchTextMode == SearchTextModeEnum.NAME || SearchTextMode == SearchTextModeEnum.ALL; }
-        bool SearchInInfo { get => SearchTextMode == SearchTextModeEnum.DESCRIPTION || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInName { get => SearchTextMode == SearchTextModeEnum.NAME || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInInfo { get => SearchTextMode == SearchTextModeEnum.DESCRIPTION || SearchTextMode == SearchTextModeEnum.ALL; }
 
-        bool SearchInFilename { get => SearchTextMode == SearchTextModeEnum.FILENAME || SearchTextMode == SearchTextModeEnum.ALL; }
-        bool SearchInDirectoryName { get => SearchTextMode == SearchTextModeEnum.DIRECTORYNAME || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInFilename { get => SearchTextMode == SearchTextModeEnum.FILENAME || SearchTextMode == SearchTextModeEnum.ALL; }
+        private bool SearchInDirectoryName { get => SearchTextMode == SearchTextModeEnum.DIRECTORYNAME || SearchTextMode == SearchTextModeEnum.ALL; }
 
-        bool SearchLocalized { 
+        private bool SearchLocalized
+        {
             get => config.SearchLocalized.Value;
-            set => config.SearchLocalized.Value = value; }
+            set => config.SearchLocalized.Value = value;
+        }
 
-        bool SearchMTL { 
-            get => SearchLocalized && config.SearchMTL.Value;}
+        private bool SearchMTL
+        {
+            get => SearchLocalized && config.SearchMTL.Value;
+        }
 
-        bool SendMTL
+        private bool SendMTL
         {
             get => SearchMTL && config.SendMTL.Value;
         }
 
-        bool SearchAllTerms {
+        private bool SearchAllTerms
+        {
             get => config.SearchAllTerms.Value;
-            set => config.SearchAllTerms.Value = value; }
+            set => config.SearchAllTerms.Value = value;
+        }
 
-        bool IncludeMods { 
-            get => ItemTypeFilter == ItemTypeFilterEnum.MOD || ItemTypeFilter == ItemTypeFilterEnum.ALL; }
+        private bool IncludeMods
+        {
+            get => ItemTypeFilter == ItemTypeFilterEnum.MOD || ItemTypeFilter == ItemTypeFilterEnum.ALL;
+        }
 
-        bool IncludeVanilla {
+        private bool IncludeVanilla
+        {
             get => ItemTypeFilter == ItemTypeFilterEnum.VANILLA || ItemTypeFilter == ItemTypeFilterEnum.ALL;
         }
 
-        bool IncludeCompat { 
+        private bool IncludeCompat
+        {
             get => ItemTypeFilter == ItemTypeFilterEnum.COMPAT || ItemTypeFilter == ItemTypeFilterEnum.ALL;
         }
 
-        bool IgnoreCase { 
+        private bool IgnoreCase
+        {
             get => config.IgnoreCase.Value;
-            set => config.IgnoreCase.Value = value; }
-
-        ItemTypeFilterEnum ItemTypeFilter {
-            get => config.ItemTypeFilter.Value;
-            set => config.ItemTypeFilter.Value = value; 
+            set => config.IgnoreCase.Value = value;
         }
 
-        SearchTextModeEnum SearchTextMode { 
-            get => config.SearchTextMode.Value;
-            set => config.SearchTextMode.Value = value; }
+        private ItemTypeFilterEnum ItemTypeFilter
+        {
+            get => config.ItemTypeFilter.Value;
+            set => config.ItemTypeFilter.Value = value;
+        }
 
-        ITranslationProvider TranslationProvider
+        private SearchTextModeEnum SearchTextMode
+        {
+            get => config.SearchTextMode.Value;
+            set => config.SearchTextMode.Value = value;
+        }
+
+        private ITranslationProvider TranslationProvider
         {
             get => AlternateEditMenuFilterPlugin.Instance.TranslationProvider;
         }
 
-        readonly List<PendingTranslation> pendingTranslations = new List<PendingTranslation>();
+        private readonly List<PendingTranslation> pendingTranslations = new List<PendingTranslation>();
 
-        void Awake()
+        private void Awake()
         {
         }
 
@@ -104,26 +116,26 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Where(s => !string.IsNullOrEmpty(s)));
         }
 
-        void Start()
+        private void Start()
         {
             Assert.IsNotNull(this.config, "Not properly initialized");
             this.BuildUI();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             this.QueueUpdateItemList();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Log.LogVerbose("Saving search history");
             this.config.History.Value = String.Join("\n", this.History.ToArray());
         }
 
-        void Update()
+        private void Update()
         {
-            if(updateItemListQueued)
+            if (updateItemListQueued)
             {
                 updateItemListQueued = false;
                 this.TranslationProvider.ResetAsyncQueue();
@@ -131,7 +143,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        void BuildUI()
+        private void BuildUI()
         {
             var panelHeight = 40;
 
@@ -165,11 +177,12 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Choice(SearchTextModeEnum.NAME, "[Name]", "Name")
                 .Choice(SearchTextModeEnum.DESCRIPTION, "[Info]", "Info")
                 .Choice(SearchTextModeEnum.FILENAME, "[Fn] Filename", "Fn")
-//                .Choice(SearchTextModeEnum.DIRECTORYNAME, "[Dir] Full directory path", "Dir")
+                //                .Choice(SearchTextModeEnum.DIRECTORYNAME, "[Dir] Full directory path", "Dir")
                 .SetValue(this.SearchTextMode)
                 .SetUpdateTextOnValuechange(true)
-                .AddChangeCallback(o => { 
-                    if(o is SearchTextModeEnum mode)
+                .AddChangeCallback(o =>
+                {
+                    if (o is SearchTextModeEnum mode)
                     {
                         this.SearchTextMode = mode;
                         this.QueueUpdateItemList();
@@ -187,7 +200,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
             itemTypeFilterDropdown.AddChangeCallback(o =>
                 {
-                    if(o is ItemTypeFilterEnum t)
+                    if (o is ItemTypeFilterEnum t)
                     {
                         this.ItemTypeFilter = t;
                         this.QueueUpdateItemList();
@@ -239,7 +252,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        void SearchTextfieldSubmit(string terms)
+        private void SearchTextfieldSubmit(string terms)
         {
             terms = terms.Trim();
             this.search = terms;
@@ -252,7 +265,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             this.QueueUpdateItemList();
         }
 
-        void AddToHistory(string terms)
+        private void AddToHistory(string terms)
         {
             var index = this.History.IndexOf(terms);
             if (index >= 0)
@@ -271,13 +284,14 @@ namespace COM3D2.AlternativeEditMenuFilter
             this.historyDropdown.Choices = this.History;
         }
 
-        void QueueUpdateItemList()
+        private void QueueUpdateItemList()
         {
             updateItemListQueued = true;
             controller.HidePanel();
         }
 
-        void UpdateItemList() { 
+        private void UpdateItemList()
+        {
             var termList = this.search
                 .Split(' ')
                 .Where(t => !string.IsNullOrEmpty(t))
@@ -299,7 +313,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             controller.ResetView();
         }
 
-        bool FilterItem(EditMenuPanelItem item, string[] termList)
+        private bool FilterItem(EditMenuPanelItem item, string[] termList)
         {
             var inName = SearchInName;
             var inInfo = SearchInInfo;
@@ -329,7 +343,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 inFilename = StringContains(item.Filename, termList);
             }
 
-            if(SearchInDirectoryName)
+            if (SearchInDirectoryName)
             {
                 var directoryName = this.GetDirectoryName(item.Filename);
                 inDirectoryname = StringContains(directoryName, termList);
@@ -338,7 +352,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             return inName || inInfo || inFilename || inDirectoryname;
         }
 
-        void QueueTranslation(EditMenuPanelItem item, string text)
+        private void QueueTranslation(EditMenuPanelItem item, string text)
         {
             if (SendMTL)
             {
@@ -351,7 +365,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        bool FilterType(EditMenuPanelItem item)
+        private bool FilterType(EditMenuPanelItem item)
         {
             if (!IncludeMods && item.IsMod)
             {
@@ -380,29 +394,29 @@ namespace COM3D2.AlternativeEditMenuFilter
             return "";
         }
 
-        bool StringContains(string str, string[] terms)
+        private bool StringContains(string str, string[] terms)
         {
-            foreach(var term in terms)
+            foreach (var term in terms)
             {
                 if (StringContains(str, term))
                 {
-                    if(!SearchAllTerms)
+                    if (!SearchAllTerms)
                     {
                         return true;
                     }
-
-                } else if(SearchAllTerms)
+                }
+                else if (SearchAllTerms)
                 {
                     return false;
                 }
             }
 
             return SearchAllTerms;
-        } 
+        }
 
-        bool StringContains(string str, string term)
+        private bool StringContains(string str, string term)
         {
-            if(IgnoreCase)
+            if (IgnoreCase)
             {
                 CompareInfo compareInfo = CultureInfo.CurrentCulture.CompareInfo;
                 int num = compareInfo.IndexOf(str, term, CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth);
@@ -412,20 +426,19 @@ namespace COM3D2.AlternativeEditMenuFilter
             return str.IndexOf(term) >= 0;
         }
 
-        bool TranslationContains(string str, string[] terms, out bool available)
+        private bool TranslationContains(string str, string[] terms, out bool available)
         {
             var result = TranslationProvider.Translate(str);
-            if(result.IsTranslationSuccessful)
+            if (result.IsTranslationSuccessful)
             {
                 available = true;
                 return StringContains(result.TranslatedText, terms);
-
             }
             available = false;
             return false;
         }
 
-        void ResetButtonClick()
+        private void ResetButtonClick()
         {
             this.search = "";
             this.searchTextField.Value = "";

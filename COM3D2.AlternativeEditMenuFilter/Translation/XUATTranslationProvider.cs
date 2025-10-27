@@ -1,22 +1,19 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
-using System.Text;
-
-using BepInEx;
 using UnityEngine;
-using HarmonyLib;
+
 //using XUnity.AutoTranslator.Plugin.Core;
 
 namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 {
-    class XUATTranslationResult
+    internal class XUATTranslationResult
     {
-        object translationResult;
+        private object translationResult;
 
-        public bool Succeeded { get; set;  }
+        public bool Succeeded { get; set; }
         public string TranslatedText { get; set; }
 
         public XUATTranslationResult(object translationResult)
@@ -27,16 +24,15 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             this.Succeeded = (bool)AccessTools.Property(type, "Succeeded").GetValue(translationResult, null);
             this.TranslatedText = (string)AccessTools.Property(type, "TranslatedText").GetValue(translationResult, null);
         }
-
     }
 
-    class XUATTranslator
+    internal class XUATTranslator
     {
-        static bool initialized = false;
-        static MethodInfo tryTranslateMethod;
-        static MethodInfo translateAsyncMethod;
-        static Type autoTranslatorType;
-        static PropertyInfo autoTranslatorDefault;
+        private static bool initialized = false;
+        private static MethodInfo tryTranslateMethod;
+        private static MethodInfo translateAsyncMethod;
+        private static Type autoTranslatorType;
+        private static PropertyInfo autoTranslatorDefault;
 
         public static bool Initialize()
         {
@@ -75,12 +71,12 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 
         public static XUATTranslator Default
         {
-            get {
+            get
+            {
                 object translator = AccessTools.TypeByName("XUnity.AutoTranslator.Plugin.Core.AutoTranslator").GetProperty("Default").GetValue(null, null);
                 return new XUATTranslator(translator);
             }
         }
-
 
         public bool TryTranslate(string text, out string translatedText)
         {
@@ -100,7 +96,6 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 
         public void TranslateAsync(string text, Action<XUATTranslationResult> resolver)
         {
-
             Action<object> callback = o =>
             {
                 resolver(new XUATTranslationResult(o));
@@ -120,14 +115,13 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             this.translator = translator;
         }
 
-        object translator;
+        private object translator;
     }
 
-    public class XUATTranslationProvider: ITranslationProvider
+    public class XUATTranslationProvider : ITranslationProvider
     {
-        XUATTranslator translator;
-        readonly Queue<AsyncTResult> queue = new Queue<AsyncTResult>();
-
+        private XUATTranslator translator;
+        private readonly Queue<AsyncTResult> queue = new Queue<AsyncTResult>();
 
         public static ITranslationProvider Create()
         {
@@ -144,7 +138,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             this.translator = XUATTranslator.Default;
         }
 
-        class TResult : ITranslationResult
+        private class TResult : ITranslationResult
         {
             public string OriginalText
             {
@@ -168,7 +162,7 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             }
         }
 
-        class AsyncTResult : TResult, ITranslationAsyncResult
+        private class AsyncTResult : TResult, ITranslationAsyncResult
         {
             public bool IsReady { get; set; }
 
@@ -214,9 +208,9 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             //this.StartCoroutine(this.StartTranslationCoroutine());
         }
 
-        IEnumerator StartTranslationCoroutine()
+        private IEnumerator StartTranslationCoroutine()
         {
-            while(true)
+            while (true)
             {
                 yield return new WaitUntil(() => this.queue.Count > 0);
 
@@ -225,7 +219,8 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
 #if DEBUG
                 LogVerbose("Translating: {r.OriginalText}");
 #endif
-                translator.TranslateAsync(r.OriginalText, (t) => {
+                translator.TranslateAsync(r.OriginalText, (t) =>
+                {
                     complete = true;
                     r.Resolve(t);
                 });
@@ -234,13 +229,11 @@ namespace COM3D2.AlternativeEditMenuFilter.Translation.XUATProvider
             }
         }
 
-        static void LogVerbose(object obj)
+        private static void LogVerbose(object obj)
         {
 #if DEBUG
             //Instance.Logger.LogInfo(obj);
 #endif
         }
-
     }
-
 }

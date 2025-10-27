@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
@@ -17,7 +12,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             set => gameObject.SetActive(value);
         }
 
-        GameObject Label
+        private GameObject Label
         {
             get
             {
@@ -46,7 +41,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                             uilabel.depth = component.depth + 2;
                             return uilabel.gameObject;
                         }
-
                     }
                 }
                 return null;
@@ -57,7 +51,6 @@ namespace COM3D2.AlternativeEditMenuFilter
         {
             get => gameObject.name;
         }
-
 
         public bool IsClothesBody { get; private set; }
         public bool IsClothes { get; private set; }

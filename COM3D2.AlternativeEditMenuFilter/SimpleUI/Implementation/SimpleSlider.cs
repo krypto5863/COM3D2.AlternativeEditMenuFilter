@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using COM3D2.SimpleUI.Events;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-
-using COM3D2.SimpleUI.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleSlider : SimpleControl, ISlider
     {
-        UISprite uiBackground;
-        UIButton uiBackgroundBtn;
-        UIWidget uiForeground;
-        UISprite uiThumb;
-        UIButton uiThumbBtn;
-        UISlider uiSlider;
+        private UISprite uiBackground;
+        private UIButton uiBackgroundBtn;
+        private UIWidget uiForeground;
+        private UISprite uiThumb;
+        private UIButton uiThumbBtn;
+        private UISlider uiSlider;
 
-        BoxCollider uiBackgroundCollider;
-        BoxCollider uiThumbCollider;
+        private BoxCollider uiBackgroundCollider;
+        private BoxCollider uiThumbCollider;
 
-        readonly SliderEvent onChange = new SliderEvent();
+        private readonly SliderEvent onChange = new SliderEvent();
 
         public enum SliderDirection
         {
@@ -30,7 +25,8 @@ namespace COM3D2.SimpleUI.Implementation
             VERTICAL
         }
 
-        SliderDirection _direction;
+        private SliderDirection _direction;
+
         public SliderDirection direction
         {
             get => _direction;
@@ -41,8 +37,8 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        float _minValue = 0f;
-        float _maxValue = 1f;
+        private float _minValue = 0f;
+        private float _maxValue = 1f;
 
         public float Value
         {
@@ -63,7 +59,8 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        int _thickness = 10;
+        private int _thickness = 10;
+
         public int thickness
         {
             get => _thickness;
@@ -99,7 +96,7 @@ namespace COM3D2.SimpleUI.Implementation
             EventDelegate.Add(uiSlider.onChange, new EventDelegate.Callback(this.OnSliderChange));
         }
 
-        void OnSliderChange()
+        private void OnSliderChange()
         {
             onChange.Invoke(this.Value);
         }
@@ -113,7 +110,8 @@ namespace COM3D2.SimpleUI.Implementation
             {
                 controlWidth = Mathf.FloorToInt(this.size.x + 0.5f) - 10;
                 controlHeight = this.thickness;
-            } else
+            }
+            else
             {
                 controlWidth = this.thickness;
                 controlHeight = Mathf.FloorToInt(this.size.y + 0.5f) - 10;
@@ -132,7 +130,6 @@ namespace COM3D2.SimpleUI.Implementation
             uiThumbBtn.defaultColor = new Color(.8f, .8f, .8f);
             uiThumbBtn.hover = Color.white;
             uiThumbBtn.pressed = Color.white;
-
 
             uiSlider.fillDirection = this.direction == SliderDirection.HORIZONTAL ? UIProgressBar.FillDirection.LeftToRight : UIProgressBar.FillDirection.BottomToTop;
             uiSlider.ForceUpdate();

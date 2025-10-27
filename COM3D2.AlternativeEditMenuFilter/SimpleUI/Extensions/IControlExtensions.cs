@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Extensions
 {
     public static class IControlExtensions
     {
-        public static R VisibleWhen<R>(this R instance, IBoolControlValue target, bool value=true)
-            where R: IControl
+        public static R VisibleWhen<R>(this R instance, IBoolControlValue target, bool value = true)
+            where R : IControl
         {
             target.AddChangeCallback(v =>
             {
@@ -20,7 +15,7 @@ namespace COM3D2.SimpleUI.Extensions
             return instance;
         }
 
-        public static R VisibleWhen<R>(this R instance, IStringControlValue target, string value, bool equal=true)
+        public static R VisibleWhen<R>(this R instance, IStringControlValue target, string value, bool equal = true)
             where R : IControl
         {
             target.AddChangeCallback(v =>
@@ -30,7 +25,6 @@ namespace COM3D2.SimpleUI.Extensions
 
             return instance;
         }
-
 
         public static R VisibleWhen<R>(this R instance, IStringControlValue target, Func<string, bool> condition)
             where R : IControl
@@ -43,7 +37,7 @@ namespace COM3D2.SimpleUI.Extensions
             return instance;
         }
 
-        public static R VisibleWhen<R>(this R instance, IIntControlValue target, int value, bool equal=true)
+        public static R VisibleWhen<R>(this R instance, IIntControlValue target, int value, bool equal = true)
             where R : IControl
         {
             target.AddChangeCallback(v =>
@@ -76,5 +70,4 @@ namespace COM3D2.SimpleUI.Extensions
             return instance;
         }
     }
-
 }

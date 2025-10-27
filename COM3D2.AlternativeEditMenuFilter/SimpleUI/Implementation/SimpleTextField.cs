@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using COM3D2.SimpleUI.Events;
 using UnityEngine;
 using UnityEngine.Events;
-
-using COM3D2.SimpleUI.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleTextField : SimpleControl, ITextField
     {
-        UISprite uiSprite;
-        UISprite bgSprite;
-        UIInput uiInput;
-        UILabel uiLabel;
+        private UISprite uiSprite;
+        private UISprite bgSprite;
+        private UIInput uiInput;
+        private UILabel uiLabel;
 
-        readonly TextChangeEvent onSubmit = new TextChangeEvent();
-        readonly TextChangeEvent onChange = new TextChangeEvent();
+        private readonly TextChangeEvent onSubmit = new TextChangeEvent();
+        private readonly TextChangeEvent onChange = new TextChangeEvent();
 
-        public string Value {
+        public string Value
+        {
             get => this.uiInput.value;
             set => this.uiInput.value = value;
         }
@@ -50,12 +45,12 @@ namespace COM3D2.SimpleUI.Implementation
             EventDelegate.Add(uiInput.onSubmit, new EventDelegate.Callback(this.SubmitEvent));
         }
 
-        void ChangeEvent()
+        private void ChangeEvent()
         {
             onChange.Invoke(this.Value);
         }
 
-        void SubmitEvent()
+        private void SubmitEvent()
         {
             onSubmit.Invoke(this.Value);
         }
@@ -92,6 +87,5 @@ namespace COM3D2.SimpleUI.Implementation
         {
             onSubmit.RemoveListener(callback);
         }
-
     }
 }

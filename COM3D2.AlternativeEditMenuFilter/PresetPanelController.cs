@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
     public class PresetPanelController
     {
-        UIScrollView m_scrollView;
-        Transform m_gridTableTrans;
-        UIScrollBar m_scrollBar;
-        SceneEdit m_sceneEdit;
-        UITable m_table;
+        private UIScrollView m_scrollView;
+        private Transform m_gridTableTrans;
+        private UIScrollBar m_scrollBar;
+        private SceneEdit m_sceneEdit;
+        private UITable m_table;
 
         public PresetPanelController(GameObject go)
         {
@@ -31,34 +29,32 @@ namespace COM3D2.AlternativeEditMenuFilter
             Assert.IsNotNull(m_scrollBar, $"Could not find UIScrollBar for {go}");
         }
 
-
-/*        private void AddLabels()
-        {
-            Font font = GameObject.Find("SystemUI Root").GetComponentsInChildren<UILabel>()[0].trueTypeFont;
-            foreach(var presetItem in this.GetAllItems())
-            {
-                var item = presetItem.gameObject;
-                UITexture component = item.GetComponent<UITexture>();
-                if (component)
+        /*        private void AddLabels()
                 {
-                    UILabel uilabel = NGUITools.AddChild<UILabel>(item);
-                    if (uilabel)
+                    Font font = GameObject.Find("SystemUI Root").GetComponentsInChildren<UILabel>()[0].trueTypeFont;
+                    foreach(var presetItem in this.GetAllItems())
                     {
-                        uilabel.trueTypeFont = font;
-                        uilabel.fontSize = 22;
-                        uilabel.width = component.width;
-                        uilabel.height = component.height;
-                        uilabel.pivot = UIWidget.Pivot.TopLeft;
-                        uilabel.overflowMethod = UILabel.Overflow.ResizeHeight;
-                        uilabel.effectStyle = UILabel.Effect.Outline;
-                        uilabel.text = "[00FF00]" + item.name.Replace(".preset", "");
-                        uilabel.depth = component.depth + 2;
+                        var item = presetItem.gameObject;
+                        UITexture component = item.GetComponent<UITexture>();
+                        if (component)
+                        {
+                            UILabel uilabel = NGUITools.AddChild<UILabel>(item);
+                            if (uilabel)
+                            {
+                                uilabel.trueTypeFont = font;
+                                uilabel.fontSize = 22;
+                                uilabel.width = component.width;
+                                uilabel.height = component.height;
+                                uilabel.pivot = UIWidget.Pivot.TopLeft;
+                                uilabel.overflowMethod = UILabel.Overflow.ResizeHeight;
+                                uilabel.effectStyle = UILabel.Effect.Outline;
+                                uilabel.text = "[00FF00]" + item.name.Replace(".preset", "");
+                                uilabel.depth = component.depth + 2;
+                            }
+                        }
                     }
                 }
-
-            }
-        }
-*/
+        */
 
         private bool _isCurrentActivePreset(Transform trans)
         {
@@ -81,11 +77,13 @@ namespace COM3D2.AlternativeEditMenuFilter
                             getComponentInChildren.spriteName.EndsWith("kindicon_clothes_body") ||
                             getComponentInChildren.spriteName.EndsWith("kindicon_clothes_body_en")
                         );
+
                     case PresetMgr.Filter.Wear:
                         return (
                             getComponentInChildren.spriteName.EndsWith("kindicon_clothes") ||
                             getComponentInChildren.spriteName.EndsWith("kindicon_clothes_en")
                         );
+
                     case PresetMgr.Filter.Body:
                         return (
                             getComponentInChildren.spriteName.EndsWith("kindicon_body") ||
@@ -98,7 +96,6 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public IEnumerable<PresetPanelItem> GetAllItems()
         {
-
             return (from i in Enumerable.Range(0, this.m_gridTableTrans.childCount)
                     select this.m_gridTableTrans.GetChild(i) into item
                     where _isCurrentActivePreset(item)
@@ -125,7 +122,7 @@ namespace COM3D2.AlternativeEditMenuFilter
 
         public void ShowLabels()
         {
-            foreach(var item in GetAllItems())
+            foreach (var item in GetAllItems())
             {
                 item.ShowName();
             }
@@ -137,8 +134,6 @@ namespace COM3D2.AlternativeEditMenuFilter
             {
                 item.HideName();
             }
-
         }
-
     }
 }

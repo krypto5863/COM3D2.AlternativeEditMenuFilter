@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace COM3D2.SimpleUI
 {
-    interface IAreaLayout: IControlContainer, ILayout
+    internal interface IAreaLayout : IControlContainer, ILayout
     {
         IBox Box(string content);
 

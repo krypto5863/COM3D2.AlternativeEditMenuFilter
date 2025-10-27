@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 using UnityEngine.Events;
 
@@ -10,11 +6,11 @@ namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleButton : SimpleControl, IButton
     {
-        UISprite uiSprite;
-        UILabel uiLabel;
-        UIButton uiButton;
+        private UISprite uiSprite;
+        private UILabel uiLabel;
+        private UIButton uiButton;
 
-        bool _isEnabled = true;
+        private bool _isEnabled = true;
 
         public bool isEnabled
         {
@@ -26,25 +22,29 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        readonly UnityEvent click = new UnityEvent();
+        private readonly UnityEvent click = new UnityEvent();
         public UnityEvent Click { get => click; }
 
-        public Color defaultColor {
+        public Color defaultColor
+        {
             get => this.uiButton.defaultColor;
             set => this.uiButton.defaultColor = value;
         }
 
-        public Color hoverColor { 
+        public Color hoverColor
+        {
             get => this.uiButton.hover;
             set => this.uiButton.hover = value;
         }
 
-        public Color disabledColor { 
+        public Color disabledColor
+        {
             get => this.uiButton.disabledColor;
             set => this.uiButton.disabledColor = value;
         }
 
-        public Color activeColor {
+        public Color activeColor
+        {
             get => this.uiButton.pressed;
             set => this.uiButton.pressed = value;
         }

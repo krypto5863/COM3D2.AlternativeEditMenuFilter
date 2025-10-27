@@ -1,47 +1,44 @@
-﻿using System;
+﻿using COM3D2.SimpleUI;
+using COM3D2.SimpleUI.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-
-
-using COM3D2.SimpleUI;
-using COM3D2.SimpleUI.Extensions;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
     public class PresetPanelFilter : MonoBehaviour
     {
-        PresetPanelController controller;
+        private PresetPanelController controller;
 
-        string search = "";
-        bool updateItemListQueued = false;
-        bool showNames = false;
+        private string search = "";
+        private bool updateItemListQueued = false;
+        private bool showNames = false;
 
-        IButton caseSensitivityButton;
-        IButton termIncludeButton;
-        IButton showNamesButton;
-        ITextField searchTextField;
-        IDropdown historyDropdown;
+        private IButton caseSensitivityButton;
+        private IButton termIncludeButton;
+        private IButton showNamesButton;
+        private ITextField searchTextField;
+        private IDropdown historyDropdown;
 
-        readonly List<string> History = new List<string>();
+        private readonly List<string> History = new List<string>();
 
-        PresetSearchConfig config;
+        private PresetSearchConfig config;
 
-        bool SearchAllTerms
+        private bool SearchAllTerms
         {
             get => config.SearchAllTerms.Value;
             set => config.SearchAllTerms.Value = value;
         }
 
-        bool IgnoreCase
+        private bool IgnoreCase
         {
             get => config.IgnoreCase.Value;
             set => config.IgnoreCase.Value = value;
         }
 
-        void Awake()
+        private void Awake()
         {
         }
 
@@ -58,24 +55,24 @@ namespace COM3D2.AlternativeEditMenuFilter
                 .Where(s => !string.IsNullOrEmpty(s)));
         }
 
-        void Start()
+        private void Start()
         {
             Assert.IsNotNull(this.config, "Not properly initialized");
             this.BuildUI();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Log.LogVerbose("Saving search history");
             this.config.History.Value = String.Join("\n", this.History.ToArray());
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             this.QueueUpdateItemList();
         }
 
-        void Update()
+        private void Update()
         {
             if (updateItemListQueued)
             {
@@ -84,7 +81,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        void BuildUI()
+        private void BuildUI()
         {
             var panelHeight = 40;
 
@@ -119,10 +116,11 @@ namespace COM3D2.AlternativeEditMenuFilter
         private void ShowNamesButtonClick()
         {
             showNames = !showNames;
-            if(showNames)
+            if (showNames)
             {
                 controller.ShowLabels();
-            } else
+            }
+            else
             {
                 controller.HideLabels();
             }
@@ -169,7 +167,7 @@ namespace COM3D2.AlternativeEditMenuFilter
                 this.caseSensitivityButton.defaultColor = this.caseSensitivityButton.hoverColor = Color.gray;
             }
 
-            if(this.showNames)
+            if (this.showNames)
             {
                 showNamesButton.defaultColor = showNamesButton.hoverColor = Color.white;
             }
@@ -179,7 +177,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             }
         }
 
-        void SearchTextfieldSubmit(string terms)
+        private void SearchTextfieldSubmit(string terms)
         {
             terms = terms.Trim();
             this.search = terms;
@@ -192,7 +190,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             this.QueueUpdateItemList();
         }
 
-        void AddToHistory(string terms)
+        private void AddToHistory(string terms)
         {
             var index = this.History.IndexOf(terms);
             if (index >= 0)
@@ -211,12 +209,12 @@ namespace COM3D2.AlternativeEditMenuFilter
             this.historyDropdown.Choices = this.History;
         }
 
-        void QueueUpdateItemList()
+        private void QueueUpdateItemList()
         {
             updateItemListQueued = true;
         }
 
-        void UpdateItemList()
+        private void UpdateItemList()
         {
             var termList = this.search
                 .Split(' ')
@@ -241,7 +239,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             controller.ResetView();
         }
 
-        void FilterItem(PresetPanelItem item, string[] termList)
+        private void FilterItem(PresetPanelItem item, string[] termList)
         {
             var inName = StringContains(item.Name, termList);
             if (!inName)
@@ -253,7 +251,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             item.Visible = true;
         }
 
-        bool StringContains(string str, string[] terms)
+        private bool StringContains(string str, string[] terms)
         {
             foreach (var term in terms)
             {
@@ -263,7 +261,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                     {
                         return true;
                     }
-
                 }
                 else if (SearchAllTerms)
                 {
@@ -274,7 +271,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             return SearchAllTerms;
         }
 
-        bool StringContains(string str, string term)
+        private bool StringContains(string str, string term)
         {
             if (IgnoreCase)
             {
@@ -286,8 +283,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             return str.IndexOf(term) >= 0;
         }
 
-
-        void ResetButtonClick()
+        private void ResetButtonClick()
         {
             this.search = "";
             this.searchTextField.Value = "";

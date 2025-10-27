@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-
+﻿using UnityEngine;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleBox : SimpleControl, IBox
     {
-        UISprite uiSprite;
-        UILabel uiLabel;
+        private UISprite uiSprite;
+        private UILabel uiLabel;
 
         public Color textColor
         {

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using COM3D2.SimpleUI.Implementation;
 using UnityEngine;
-
-
-using COM3D2.SimpleUI.Implementation;
 
 namespace COM3D2.SimpleUI
 {
-
     public class SimpleUIRoot
     {
         public static IFixedLayout Create()

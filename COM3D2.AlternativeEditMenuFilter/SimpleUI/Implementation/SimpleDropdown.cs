@@ -1,12 +1,8 @@
-﻿using System;
+﻿using COM3D2.SimpleUI.Events;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
-
-using COM3D2.SimpleUI.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
@@ -14,12 +10,14 @@ namespace COM3D2.SimpleUI.Implementation
     {
         protected bool ready = false;
 
-        public string Value { 
+        public string Value
+        {
             get => uiPopupList.value;
             set => uiPopupList.value = value;
         }
 
-        IEnumerable<string> _choices;
+        private IEnumerable<string> _choices;
+
         public IEnumerable<string> Choices
         {
             get => _choices;
@@ -39,7 +37,7 @@ namespace COM3D2.SimpleUI.Implementation
         protected UIButton uiButton;
         protected UILabel uiLabel;
 
-        readonly TextChangeEvent onChange = new TextChangeEvent();
+        private readonly TextChangeEvent onChange = new TextChangeEvent();
 
         public override void InitControl()
         {
@@ -64,25 +62,25 @@ namespace COM3D2.SimpleUI.Implementation
             uiButton = this.uiSprite.gameObject.AddComponent<UIButton>();
             uiButton.hover = Color.white;
             uiButton.defaultColor = new Color(.9f, .9f, .9f);
-            
+
             this.uiLabel = NGUITools.AddWidget<UILabel>(uiSprite.gameObject);
             uiLabel.trueTypeFont = UIUtils.GetFont("NotoSansCJKjp-DemiLight");
             uiLabel.color = Color.black;
         }
 
-        void Start()
+        private void Start()
         {
             // UIPopupList has an annoying feature of firing change event as soon as initialization
             // This delays forwarding change events untill that happens
             StartCoroutine(DelayedStart());
         }
 
-        IEnumerator DelayedStart()
+        private IEnumerator DelayedStart()
         {
             yield return null;
             this.ready = true;
         }
-        
+
         public void AddChangeCallback(UnityAction<string> callback)
         {
             this.onChange.AddListener(callback);
@@ -95,7 +93,7 @@ namespace COM3D2.SimpleUI.Implementation
 
         protected virtual void uiPopupListChange()
         {
-            if(this.ready)
+            if (this.ready)
             {
                 this.onChange.Invoke(this.uiPopupList.value);
             }

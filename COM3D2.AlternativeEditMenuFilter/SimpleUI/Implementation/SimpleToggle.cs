@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using COM3D2.SimpleUI.Events;
+using System;
 using UnityEngine;
-
-using COM3D2.SimpleUI.Events;
 using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public class SimpleToggle : SimpleControl, IToggle
     {
-        BoxCollider boxCollider;
-        UISprite checkSprite;
-        UISprite boxSprite;
-        UILabel uiLabel;
-        UIButton uiButton;
+        private BoxCollider boxCollider;
+        private UISprite checkSprite;
+        private UISprite boxSprite;
+        private UILabel uiLabel;
+        private UIButton uiButton;
 
-        bool _value;
-        public bool Value { 
+        private bool _value;
+
+        public bool Value
+        {
             get => _value;
-            set {
+            set
+            {
                 this._value = value;
                 this.checkSprite.gameObject.SetActive(value);
             }
@@ -33,8 +31,7 @@ namespace COM3D2.SimpleUI.Implementation
         public Color selectedActiveColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Color disabledColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-
-        readonly ToggleEvent onSelected = new ToggleEvent();
+        private readonly ToggleEvent onSelected = new ToggleEvent();
         public ToggleEvent OnSelected { get => onSelected; }
 
         public override void InitControl()
@@ -60,7 +57,7 @@ namespace COM3D2.SimpleUI.Implementation
             uiButton.tweenTarget = boxSprite.gameObject;
             uiButton.hover = Color.white;
             uiButton.defaultColor = new Color(1, 1, 1, 0.9f);
-            EventDelegate.Add(uiButton.onClick, new EventDelegate.Callback(delegate()
+            EventDelegate.Add(uiButton.onClick, new EventDelegate.Callback(delegate ()
             {
                 this.Value = !this.Value;
                 OnSelected.Invoke(this.Value);
@@ -76,7 +73,7 @@ namespace COM3D2.SimpleUI.Implementation
 
             uiLabel.SetDimensions(Mathf.FloorToInt(labelWidth + 0.5f), Mathf.FloorToInt(this.size.y + 0.5f));
             uiLabel.gameObject.transform.localPosition = new Vector3(
-                -labelWidth/2+15, 0);
+                -labelWidth / 2 + 15, 0);
             uiLabel.text = this.text;
         }
 

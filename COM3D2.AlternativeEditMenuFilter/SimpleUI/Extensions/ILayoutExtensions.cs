@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine.Events;
-
+﻿using UnityEngine.Events;
 
 namespace COM3D2.SimpleUI.Extensions
 {
@@ -15,6 +9,5 @@ namespace COM3D2.SimpleUI.Extensions
             layout.AddLayoutCallback(callback);
             return layout;
         }
-
     }
 }

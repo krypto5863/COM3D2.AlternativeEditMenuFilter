@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using UnityEngine;
 using UnityEngine.Events;
-
-
 
 namespace COM3D2.SimpleUI.Implementation
 {
@@ -43,11 +37,11 @@ namespace COM3D2.SimpleUI.Implementation
             return control;
         }
 
-        public IButton Button(Rect rect, string content, UnityAction onClick=null)
+        public IButton Button(Rect rect, string content, UnityAction onClick = null)
         {
             var btn = Child<SimpleButton>(rect);
             btn.text = content;
-            if(onClick != null)
+            if (onClick != null)
             {
                 btn.Click.AddListener(onClick);
             }
@@ -139,7 +133,7 @@ namespace COM3D2.SimpleUI.Implementation
             toolbar.Choices = choices;
             toolbar.Value = initial;
 
-            if(onChange != null)
+            if (onChange != null)
             {
                 toolbar.AddChangeCallback(onChange);
             }

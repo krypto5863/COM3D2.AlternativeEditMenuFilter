@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 
 namespace COM3D2.AlternativeEditMenuFilter
 {
@@ -78,7 +73,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                 "Max history entries",
                 10,
                 "Maximum amount of history entries to keep");
-
         }
     }
 
@@ -88,7 +82,6 @@ namespace COM3D2.AlternativeEditMenuFilter
         public ConfigEntry<int> MaxHistory { get; private set; }
         public ConfigEntry<bool> SearchAllTerms { get; private set; }
         public ConfigEntry<bool> IgnoreCase { get; private set; }
-
 
         public PresetSearchConfig(ConfigFile cfg, string section)
         {
@@ -115,7 +108,6 @@ namespace COM3D2.AlternativeEditMenuFilter
                 "Max history entries",
                 10,
                 "Maximum amount of history entries to keep");
-
         }
     }
 
@@ -133,6 +125,5 @@ namespace COM3D2.AlternativeEditMenuFilter
             ItemSetSearchConfig = new MenuSearchConfig(cfg, "Item presets");
             PresetSearchConfig = new PresetSearchConfig(cfg, "Character presets");
         }
-
     }
 }

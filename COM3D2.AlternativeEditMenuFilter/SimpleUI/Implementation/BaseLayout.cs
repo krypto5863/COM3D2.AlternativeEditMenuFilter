@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +11,7 @@ namespace COM3D2.SimpleUI.Implementation
         protected bool _dirty = true;
 
         protected Vector2 _position;
+
         public virtual Vector2 position
         {
             get => _position;
@@ -24,6 +22,7 @@ namespace COM3D2.SimpleUI.Implementation
         }
 
         protected Vector2 _size;
+
         public virtual Vector2 size
         {
             get => _size;
@@ -39,7 +38,7 @@ namespace COM3D2.SimpleUI.Implementation
         protected BoxCollider boxCollider;
         protected UIPanel uiPanel;
 
-        readonly UnityEvent onLayout = new UnityEvent();
+        private readonly UnityEvent onLayout = new UnityEvent();
 
         public virtual int width => Mathf.FloorToInt(_size.x + 0.5f);
 
@@ -79,7 +78,7 @@ namespace COM3D2.SimpleUI.Implementation
         {
         }
 
-        protected T Child<T>() where T: MonoBehaviour, ILayoutComponent
+        protected T Child<T>() where T : MonoBehaviour, ILayoutComponent
         {
             GameObject go = NGUITools.AddChild(this.gameObject);
             T component = go.AddComponent<T>();
@@ -132,7 +131,7 @@ namespace COM3D2.SimpleUI.Implementation
 
                 this._dirty = false;
 
-                if(boxCollider != null)
+                if (boxCollider != null)
                 {
                     boxCollider.size = this.size;
                 }
@@ -146,7 +145,7 @@ namespace COM3D2.SimpleUI.Implementation
         {
             this._size = size;
             SetDirty();
-            if(triggerLayout && _parent != null)
+            if (triggerLayout && _parent != null)
             {
                 _parent.SetDirty();
             }
@@ -205,8 +204,8 @@ namespace COM3D2.SimpleUI.Implementation
                 {
                     SetupDraggable();
                 }
-                
-                if(uiDragObj != null)
+
+                if (uiDragObj != null)
                 {
                     uiDragObj.enabled = value;
                     SetDirty();
@@ -259,7 +258,6 @@ namespace COM3D2.SimpleUI.Implementation
             var xlocal = -(this._size.x / 2f) + (size.x / 2f) + position.x;
             var ylocal = (this._size.y / 2f) - (size.y / 2f) - position.y;
             return new Vector3(xlocal, ylocal);
-
         }
 
         public void AddLayoutCallback(UnityAction callback)

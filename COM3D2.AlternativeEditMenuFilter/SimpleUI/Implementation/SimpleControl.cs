@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
-
+﻿using UnityEngine;
 
 namespace COM3D2.SimpleUI.Implementation
 {
     public abstract class SimpleControl : MonoBehaviour, IControl, ILayoutComponent
     {
-        Vector2 _size;
-        Vector2 _position;
-        string _text;
-        UITexture _texture;
-        bool _dirty = true;
+        private Vector2 _size;
+        private Vector2 _position;
+        private string _text;
+        private UITexture _texture;
+        private bool _dirty = true;
 
-        BaseLayout _parent;
+        private BaseLayout _parent;
 
-        public Vector2 size {
+        public Vector2 size
+        {
             get => _size;
             set
             {
@@ -26,7 +21,8 @@ namespace COM3D2.SimpleUI.Implementation
             }
         }
 
-        public Vector2 position {
+        public Vector2 position
+        {
             get => _position;
             set
             {
@@ -103,11 +99,12 @@ namespace COM3D2.SimpleUI.Implementation
         }
 
         public abstract void UpdateUI();
+
         public abstract void InitControl();
 
         public void Remove()
         {
-            if(_parent)
+            if (_parent)
             {
                 this._parent.Remove(this);
                 this._parent = null;
@@ -115,9 +112,9 @@ namespace COM3D2.SimpleUI.Implementation
             Destroy(this.gameObject);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
-            if(_parent)
+            if (_parent)
             {
                 this._parent.Remove(this);
             }
