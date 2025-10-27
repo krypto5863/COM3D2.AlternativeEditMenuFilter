@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using COM3D2.AlternativeEditMenuFilter.COM3D2.AlternativeEditMenuFilter;
 using UnityEngine;
 
 namespace COM3D2.AlternativeEditMenuFilter
