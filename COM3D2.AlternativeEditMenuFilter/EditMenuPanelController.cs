@@ -32,7 +32,7 @@ namespace COM3D2.AlternativeEditMenuFilter
             m_scrollBar = go.GetComponentInChildren<UIScrollBar>(false);
             Assert.IsNotNull(m_scrollBar, $"Could not find UIScrollBar for {go}");
 
-            PanelItemPool = new SimpleObjectPool<EditMenuPanelItem>();
+            PanelItemPool = new SimpleObjectPool<EditMenuPanelItem>(null, item => item.Reset());
         }
 
         public IEnumerable<EditMenuPanelItem> GetAllItems()

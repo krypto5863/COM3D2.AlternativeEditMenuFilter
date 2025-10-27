@@ -74,5 +74,13 @@ namespace COM3D2.AlternativeEditMenuFilter
             _isCompat = null;
             _existentFile = null;
         }
+
+        public void Reset()
+        {
+            gameObject = null;
+            menu = null;
+            _isCompat = null;
+            _existentFile = null;
+        }
     }
 }
